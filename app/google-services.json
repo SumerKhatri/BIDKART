@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "57708299568",
+    "firebase_url": "https://bidkart-fafa8.firebaseio.com",
+    "project_id": "bidkart-fafa8",
+    "storage_bucket": "bidkart-fafa8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:57708299568:android:91aaa3f7c7ddf07e7474f5",
+        "android_client_info": {
+          "package_name": "com.example.bidkart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "57708299568-k5tsthgeuuva9k3l3rh4tl6rckntjiv1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB5SPtUhPSVDuyAwZzWlbbr16-ruXyaQY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "57708299568-k5tsthgeuuva9k3l3rh4tl6rckntjiv1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
