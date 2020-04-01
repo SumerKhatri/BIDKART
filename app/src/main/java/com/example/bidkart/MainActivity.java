@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 //import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -29,8 +30,10 @@ public class MainActivity extends AppCompatActivity {
     private SignInButton signInButton;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
-    private Button btnSignout;
+    private Button VerifyPhone;
     private String TAG = "MainActivity";
+    EditText PhoneNumber;
+    private String Number;
     private int RC_SIGN_IN = 1;
 
     @Override
@@ -41,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
         signInButton = findViewById(R.id.signInButton);
         mAuth = FirebaseAuth.getInstance();
+        VerifyPhone = findViewById(R.id.btn_verify_phone);
+        PhoneNumber = findViewById(R.id.ETLoginPhone);
+
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -56,12 +62,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        VerifyPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Number = PhoneNumber.getText().toString();
+                validNo(Number);
+                Intent intent = new Intent(MainActivity.this,VerifyMobile.class);
+                intent.putExtra("PhoneNumber",Number);
+                startActivity(intent);
+                Toast.makeText(MainActivity.this,Number,Toast.LENGTH_LONG).show();
+
+            }
+        });
+
     }
 
         private void signIn(){
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent,RC_SIGN_IN);
         }
+
+    private void validNo(String no){
+        if(no.isEmpty() || no.length() < 10){
+            PhoneNumber.setError("Enter a valid mobile");
+            PhoneNumber.requestFocus();
+            return;
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
