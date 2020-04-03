@@ -22,6 +22,8 @@
         </activity>
         <activity android:name=".VerifyMobile">
         </activity>
+        <activity android:name=".Profile">
+        </activity>
     </application>
 
 </manifest>
