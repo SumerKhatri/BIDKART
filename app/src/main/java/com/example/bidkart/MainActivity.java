@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     private Button VerifyPhone;
+    private Button Continue;
     private String TAG = "MainActivity";
     EditText PhoneNumber;
     private String Number;
@@ -74,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
 
     }
 
