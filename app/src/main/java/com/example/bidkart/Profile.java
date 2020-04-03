@@ -44,7 +44,7 @@ public class Profile extends AppCompatActivity {
                 DatabaseReference dbRef = database.getReference();
                 dbRef.setValue(Fname);
 
-                Intent intent = new Intent(Profile.this,Home.class);
+                Intent intent = new Intent(Profile.this,Category.class);
                 startActivity(intent);
 
             }

@@ -24,6 +24,8 @@
         </activity>
         <activity android:name=".Profile">
         </activity>
+        <activity android:name=".Category">
+        </activity>
     </application>
 
 </manifest>
