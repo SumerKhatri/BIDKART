@@ -31,12 +31,11 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     private Button VerifyPhone;
-    private Button Continue;
+    private Button Test_login;
     private String TAG = "MainActivity";
     EditText PhoneNumber;
     private String Number;
     private int RC_SIGN_IN = 1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         VerifyPhone = findViewById(R.id.btn_verify_phone);
         PhoneNumber = findViewById(R.id.ETLoginPhone);
+        Test_login = findViewById(R.id.btn_test_login);
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -76,7 +76,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-            ///This has to be removed afterwards
+
+        Test_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,Profile.class);
+                startActivity(intent);
+            }
+        });
+
 
 
     }
@@ -84,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         private void signIn(){
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent,RC_SIGN_IN);
+
         }
 
     private void validNo(String no){

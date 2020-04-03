@@ -13,9 +13,10 @@
         android:background="@color/colorPrimary"
 
         app:layout_constraintTop_toTopOf="parent"
-        app:logo="@drawable/ic_menu"
 
-        app:titleMarginStart="40dp" />
+app:title=""
+        app:titleTextColor="@color/colorPrimary"
+         />
 
     <EditText
         android:id="@+id/searchInput"
@@ -31,6 +32,20 @@
         app:layout_constraintEnd_toEndOf="@+id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar" />
+
+    <ImageButton
+        android:id="@+id/navigation_menu"
+        style="@style/Widget.AppCompat.ImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_menu"
+        android:tint="@color/common_google_signin_btn_text_dark_focused"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintEnd_toStartOf="@+id/searchInput"
+        app:layout_constraintStart_toStartOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/searchInput"
+        app:srcCompat="@drawable/ic_menu"
+        android:contentDescription="TODO" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
