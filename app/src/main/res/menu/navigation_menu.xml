@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+
+        <item
+            android:id="@+id/home"
+            android:icon="@drawable/ic_home"
+            android:title="Home"
+
+            />
+        <item
+            android:id="@+id/sell_now"
+            android:icon="@drawable/ic_photo_camera_black_24dp"
+            android:title="Sell Now"
+
+            />
+
+
+    <item android:title="Bidding">
+
+        <menu>
+            <item
+                android:id="@+id/Selling"
+                android:icon="@drawable/ic_photo_camera_black_24dp"
+                android:title="Selling">
+
+            </item>
+
+            <item
+                android:id="@+id/Buying"
+                android:icon="@drawable/ic_add_shopping_cart_black_24dp"
+                android:title="Buying">
+
+            </item>
+            <item
+                android:id="@+id/watchlist"
+                android:icon="@drawable/ic_watchlist"
+                android:title="My Watch List">
+
+            </item>
+            <item
+                android:id="@+id/Bought"
+                android:icon="@drawable/ic_shopping_cart_black_24dp"
+                android:title="Bought">
+
+            </item>
+            <item
+                android:id="@+id/Bids"
+                android:icon="@drawable/ic_gavel_black_24dp"
+                android:title="Bids">
+
+            </item>
+            <item
+                android:id="@+id/Wins"
+                android:icon="@drawable/ic_thumb_up_black_24dp"
+                android:title="Wins">
+
+            </item>
+
+
+        </menu>
+
+
+    </item>
+</menu>

@@ -3,14 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <item
     android:title="Share"
-    android:id="@+id/share"/>
+    android:id="@+id/share"
+    android:icon="@drawable/ic_share_black_24dp"/>
+
     <item
     android:title="About"
         android:id="@+id/about"
+        android:icon="@drawable/ic_adb_black_24dp"
         />
     <item
         android:title="Exit"
         android:id="@+id/exit"
+        android:icon="@drawable/ic_close_black_24dp"
         />
     <item
         android:title="Search"
