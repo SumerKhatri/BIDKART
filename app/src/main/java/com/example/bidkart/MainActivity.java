@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private String Number;
     private int RC_SIGN_IN = 1;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+            ///This has to be removed afterwards
 
 
     }
