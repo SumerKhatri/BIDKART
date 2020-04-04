@@ -29,9 +29,9 @@
             </item>
 
             <item
-                android:id="@+id/Buying"
+                android:id="@+id/Sold"
                 android:icon="@drawable/ic_add_shopping_cart_black_24dp"
-                android:title="Buying">
+                android:title="Sold">
 
             </item>
             <item

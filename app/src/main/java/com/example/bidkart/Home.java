@@ -1,5 +1,6 @@
 package com.example.bidkart;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,15 +40,44 @@ public class Home extends AppCompatActivity {
                  @Override
                  public boolean onMenuItemClick(MenuItem item) {
                      Toast.makeText(getApplicationContext(), "Selected Item: " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                    switchToActivity(item.getTitle());
                      return false;
                  }
              });
                 popup.inflate(R.menu.navigation_menu);
 
-               
+
                 popup.show();
             }
         });
+    }
+
+    private void switchToActivity(CharSequence title) {
+        if(title.equals("Sell Now"))
+        startActivity(new Intent(this,SellProduct.class));
+        else  if(title.equals("Share"))
+            startActivity(new Intent(this,Share.class));
+        else  if(title.equals("About"))
+            startActivity(new Intent(this,About.class));
+        else  if(title.equals("Exit"))
+        {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("EXIT", true);
+            startActivity(intent);
+        }
+        else  if(title.equals("Selling"))
+            startActivity(new Intent(this,Selling.class));
+        else  if(title.equals("Sold"))
+            startActivity(new Intent(this,Sold.class));
+        else  if(title.equals("My Watch List"))
+            startActivity(new Intent(this,Watchlist.class));
+        else  if(title.equals("Bought"))
+            startActivity(new Intent(this,Bought.class));
+        else  if(title.equals("Bids"))
+            startActivity(new Intent(this,Bids.class));
+        else  if(title.equals("Wins"))
+            startActivity(new Intent(this,Wins.class));
     }
 
     @Override
@@ -66,28 +96,7 @@ public class Home extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Toast.makeText(this, "Selected Item: " + item.getTitle(), Toast.LENGTH_SHORT).show();
-//        switch (item.getItemId()) {
-//            case R.id.search_item:
-//                // do your code
-//                return true;
-//            case R.id.upload_item:
-//                // do your code
-//                return true;
-//            case R.id.copy_item:
-//                // do your code
-//                return true;
-//            case R.id.print_item:
-//                // do your code
-//                return true;
-//            case R.id.share_item:
-//                // do your code
-//                return true;
-//            case R.id.bookmark_item:
-//                // do your code
-//                return true;
-//            default:
-//                return false;
-//    }
+        switchToActivity(item.getTitle());
         return false;
     }
 }
