@@ -14,6 +14,7 @@ import android.os.Bundle;
 
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -22,13 +23,24 @@ private ImageButton btn;
 private  static final int PICK_IMAGE=1;
 ImageView iv;
 private Uri imageUri;
-
+private Button next;
+Intent i;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sell_product);
         btn=findViewById(R.id.imageButton);
         iv=findViewById(R.id.imageView2);
+        next=findViewById(R.id.btnNext);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                    startActivity(i);
+
+            }
+        });
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,8 +60,10 @@ private Uri imageUri;
             switch (requestCode){
                 case PICK_IMAGE:
                     //data.getData returns the content URI for the selected Image
-                    Uri selectedImage = data.getData();
-                    iv.setImageURI(selectedImage);
+                    Uri imageUri = data.getData();
+                    iv.setImageURI(imageUri);
+                    i = new Intent(SellProduct.this, SellProductDetails.class);
+                    i.putExtra("image_uri", imageUri.toString());
                     break;
             }
 
