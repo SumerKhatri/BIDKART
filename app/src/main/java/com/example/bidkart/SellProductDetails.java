@@ -47,7 +47,7 @@ Button btn;
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String category=parent.getItemAtPosition(position).toString();
-
+                Toast.makeText(getApplicationContext(),"Selected Item is:"+category,Toast.LENGTH_SHORT);
             }
 
             @Override
@@ -60,7 +60,9 @@ Button btn;
             @Override
             public void onClick(View v) {
                 description=et.getText().toString();
-
+                Intent intent = new Intent(SellProductDetails.this,sellproduct_location.class);
+                startActivity(intent);
+                
             }
         });
         sb=findViewById(R.id.seekBar);
@@ -91,5 +93,7 @@ Button btn;
 
             }
         });
+
+
     }
 }
