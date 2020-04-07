@@ -60,6 +60,8 @@ Button btn;
             @Override
             public void onClick(View v) {
                 description=et.getText().toString();
+                Intent intent = new Intent(SellProductDetails.this,sellproduct_location.class);
+                startActivity(intent);
                 
             }
         });
@@ -91,5 +93,7 @@ Button btn;
 
             }
         });
+
+
     }
 }
