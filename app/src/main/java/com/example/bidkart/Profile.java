@@ -18,8 +18,8 @@ public class Profile extends AppCompatActivity {
 
     private EditText name;
     private Button cont,skip;
-    DatabaseReference dbref;
-    FirebaseDatabase database;
+    User user;
+    Bundle extras;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,8 +30,7 @@ public class Profile extends AppCompatActivity {
         name=findViewById(R.id.ETentername);
         skip = findViewById(R.id.btn_skip_login);
 
-        database = FirebaseDatabase.getInstance();
-        dbref = database.getReference("users");
+
 
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,32 +43,14 @@ public class Profile extends AppCompatActivity {
         cont.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
-                add_user();
+                String Fname = name.getText().toString();
+                user = new User(Fname);
                 Intent intent = new Intent(Profile.this,Category.class);
+                intent.putExtra("USER",user);
                 startActivity(intent);
 
             }
         });
 
-    }
-
-    private void add_user()
-    {
-        String Fname = name.getText().toString();
-
-        if(!TextUtils.isEmpty(Fname))
-        {
-            String id = dbref.push().getKey();
-
-            User user = new User(id,Fname);
-            dbref.child(id).setValue(user.name);
-        }
-
-        else{
-            Toast.makeText(this,"You should enter a name",Toast.LENGTH_LONG).show();
-        }
     }
 }

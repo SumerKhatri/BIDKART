@@ -16,7 +16,8 @@
         app:layout_constraintHorizontal_bias="0.084"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.201" />
+        app:layout_constraintVertical_bias="0.201"
+        android:onClick="SelectItem"/>
 
     <TextView
         android:id="@+id/textView2"
@@ -41,7 +42,8 @@
         app:layout_constraintHorizontal_bias="0.076"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.296" />
+        app:layout_constraintVertical_bias="0.296"
+        android:onClick="SelectItem"/>
 
     <CheckBox
         android:id="@+id/check_book"
@@ -53,7 +55,8 @@
         app:layout_constraintHorizontal_bias="0.077"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.392" />
+        app:layout_constraintVertical_bias="0.392"
+        android:onClick="SelectItem"/>
 
     <CheckBox
         android:id="@+id/check_Fashion"
@@ -65,7 +68,8 @@
         app:layout_constraintHorizontal_bias="0.077"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.485" />
+        app:layout_constraintVertical_bias="0.485"
+        android:onClick="SelectItem"/>
 
     <CheckBox
         android:id="@+id/check_Gaming"
@@ -77,7 +81,8 @@
         app:layout_constraintHorizontal_bias="0.085"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.578" />
+        app:layout_constraintVertical_bias="0.578"
+        android:onClick="SelectItem"/>
 
     <CheckBox
         android:id="@+id/check_watches"
@@ -90,7 +95,8 @@
         app:layout_constraintHorizontal_bias="0.079"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.721" />
+        app:layout_constraintVertical_bias="0.721"
+        android:onClick="SelectItem"/>
 
     <CheckBox
         android:id="@+id/check_toys"
@@ -102,7 +108,8 @@
         app:layout_constraintHorizontal_bias="0.092"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.811" />
+        app:layout_constraintVertical_bias="0.811"
+        android:onClick="SelectItem"/>
 
     <Button
         android:id="@+id/button_browse"
@@ -115,17 +122,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.941" />
-
-    <TextView
-        android:id="@+id/resultt"
-        android:layout_width="170dp"
-        android:layout_height="117dp"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.851"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.477" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
