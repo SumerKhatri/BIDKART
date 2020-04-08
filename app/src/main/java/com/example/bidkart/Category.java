@@ -2,153 +2,118 @@ package com.example.bidkart;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
+
 
 public class Category extends AppCompatActivity {
 
-    private TextView nm;
     private Button brw;
-    private CheckBox mobile,laptop,book,fashion,gaming,watches,toys;
-    private ArrayList<String> mResult;
-    private TextView mResulttext;
-   // private String[] listItems;
-    //boolean[] checkedItems;
+    private String id;
+    private ArrayList<String> mResult = new ArrayList<String>();
+    User user;
+    DatabaseReference dbref;
+    FirebaseDatabase database;
 
     @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.category);
 
-
         brw=findViewById(R.id.button_browse);
-        nm=findViewById(R.id.textView2);
+        database = FirebaseDatabase.getInstance();
+        dbref = database.getReference("users");
 
-        mobile=findViewById(R.id.check_mobile);
-        laptop=findViewById(R.id.check_laptop);
-        book=findViewById(R.id.check_book);
-        fashion=findViewById(R.id.check_Fashion);
-        gaming=findViewById(R.id.check_Gaming);
-        watches=findViewById(R.id.check_watches);
-        toys=findViewById(R.id.check_toys);
-
-        mResulttext=findViewById(R.id.resultt);
-        mResult=new ArrayList<>();
-        mResulttext.setEnabled(false);
-
-
-        mobile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mobile.isChecked())
-                    mResult.add("Mobile");
-                else
-                    mResult.remove("Mobile");
-
-            }
-        });
-
-        book.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(book.isChecked())
-                    mResult.add("Book");
-                else
-                    mResult.remove("Book");
-
-            }
-        });
-
-        laptop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mobile.isChecked())
-                    mResult.add("Laptop");
-                else
-                    mResult.remove("Laptop");
-
-            }
-        });
-
-        fashion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mobile.isChecked())
-                    mResult.add("Fashion and Apparel");
-                else
-                    mResult.remove("Fashion and Apparel");
-
-            }
-        });
-
-        gaming.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mobile.isChecked())
-                    mResult.add("Gaming");
-                else
-                    mResult.remove("Gaming");
-
-            }
-        });
-
-
-
-        watches.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mobile.isChecked())
-                    mResult.add("Watches");
-                else
-                    mResult.remove("Watches");
-
-            }
-        });
-
-        toys.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mobile.isChecked())
-                    mResult.add("Toys");
-                else
-                    mResult.remove("Toys");
-
-            }
-        });
-
+        Intent intent = getIntent();
+        user = intent.getParcelableExtra("USER");
 
         brw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StringBuilder stringBuilder = new StringBuilder();
-                for(String s : mResult)
-                    stringBuilder.append(s).append("\n");
 
-
-                mResulttext.setText(stringBuilder.toString());
-                mResulttext.setEnabled(false);
-
-
+                add_user();
                 Intent intent=new Intent(Category.this,Home.class);
                 startActivity(intent);
-
-
             }
         });
 
+    }
 
+    public void SelectItem(View view)
+    {
+        boolean checked = ((CheckBox)view).isChecked();
 
+        switch (view.getId()){
+            case R.id.check_mobile:
+                if(checked)
+                    mResult.add("Mobiles");
+                else
+                    mResult.remove("Mobiles");
+                break;
+            case R.id.check_laptop:
+                if(checked)
+                    mResult.add("Laptops");
+                else
+                    mResult.remove("Laptops");
+                break;
+            case R.id.check_book:
+                if(checked)
+                    mResult.add("Books");
+                else
+                    mResult.remove("Books");
+                break;
+            case R.id.check_Fashion:
+                if(checked)
+                    mResult.add("Fashion");
+                else
+                    mResult.remove("Fashion");
+                break;
+            case R.id.check_Gaming:
+                if(checked)
+                    mResult.add("Gaming");
+                else
+                    mResult.remove("Gaming");
+                break;
+            case R.id.check_watches:
+                if(checked)
+                    mResult.add("Watches");
+                else
+                    mResult.remove("Watches");
+                break;
+            case R.id.check_toys:
+                if(checked)
+                    mResult.add("Toys");
+                else
+                    mResult.remove("Toys");
+                break;
+        }
+    }
 
+    private void add_user()
+    {
+        if(!TextUtils.isEmpty(mResult.get(0)))
+        {
+            user.setCategories(mResult);
+            String id = dbref.push().getKey();
+            user.setUserId(id);
+            dbref.child(id).setValue(user);
 
+        }
 
-
+        else{
+            Toast.makeText(this,"You should select atleast one category",Toast.LENGTH_LONG).show();
+        }
     }
 }
