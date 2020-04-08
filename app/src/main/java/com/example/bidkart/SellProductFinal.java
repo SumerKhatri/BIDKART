@@ -35,7 +35,7 @@ public class SellProductFinal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sell_product_final);
         sp=findViewById(R.id.spinnerDays);
-        sell_final = findViewById(R.id.button);
+        sell_final = findViewById(R.id.post);
         price = findViewById(R.id.editText5);
         quantity = findViewById(R.id.editText6);
 
