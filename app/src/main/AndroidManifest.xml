@@ -14,9 +14,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SellProductFinal"></activity>
+        <activity android:name=".Animation">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SellProductFinal" />
         <activity android:name=".SellProductDetails" />
-        <activity android:name=".sellproduct_location"/>
+        <activity android:name=".sellproduct_location" />
         <activity android:name=".Wins" />
         <activity android:name=".Bids" />
         <activity android:name=".Bought" />
@@ -27,11 +34,7 @@
         <activity android:name=".Share" />
         <activity android:name=".SellProduct" />
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".Home" />
         <activity android:name=".VerifyMobile" />
