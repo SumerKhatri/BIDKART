@@ -1,6 +1,7 @@
 package com.example.bidkart;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,7 +20,7 @@ public class Profile extends AppCompatActivity {
     private EditText name;
     private Button cont,skip;
     User user;
-    Bundle extras;
+    String Fname;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class Profile extends AppCompatActivity {
         cont.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Fname = name.getText().toString();
+                Fname = name.getText().toString();
                 user = new User(Fname);
                 Intent intent = new Intent(Profile.this,Category.class);
                 intent.putExtra("USER",user);
