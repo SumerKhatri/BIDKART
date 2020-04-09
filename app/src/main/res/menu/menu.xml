@@ -12,6 +12,11 @@
         android:icon="@drawable/ic_adb_black_24dp"
         />
     <item
+        android:title="Logout"
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_close_black_24dp"
+        />
+    <item
         android:title="Exit"
         android:id="@+id/exit"
         android:icon="@drawable/ic_close_black_24dp"

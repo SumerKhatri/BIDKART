@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class Home extends AppCompatActivity {
     private ImageButton navBtn;
 
@@ -55,6 +57,10 @@ public class Home extends AppCompatActivity {
     private void switchToActivity(CharSequence title) {
         if(title.equals("Sell Now"))
         startActivity(new Intent(this,SellProduct.class));
+        else if(title.equals("Logout")){
+            //Write your code here Ketan
+            
+        }
         else  if(title.equals("Share"))
             startActivity(new Intent(this,Share.class));
         else  if(title.equals("About"))
