@@ -1,6 +1,7 @@
 package com.example.bidkart;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,8 +59,11 @@ public class Home extends AppCompatActivity {
         if(title.equals("Sell Now"))
         startActivity(new Intent(this,SellProduct.class));
         else if(title.equals("Logout")){
-            //Write your code here Ketan
-            
+            SharedPreferences sp = getSharedPreferences("My_Shared_Pref",MODE_PRIVATE);
+            sp.edit().putBoolean("logged",false).apply();
+            startActivity(new Intent(Home.this,MainActivity.class));
+            finish();
+
         }
         else  if(title.equals("Share"))
             startActivity(new Intent(this,Share.class));
