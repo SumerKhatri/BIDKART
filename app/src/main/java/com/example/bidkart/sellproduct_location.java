@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -16,6 +17,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -26,6 +28,8 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,6 +42,8 @@ public class sellproduct_location extends AppCompatActivity {
     private TextView textLatLong,textAdress;
     private ProgressBar progressBar;
     Button next;
+    Product product;
+    String cityName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +56,20 @@ public class sellproduct_location extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         textAdress = findViewById(R.id.textAdress);
         next=findViewById(R.id.locationbtn);
+
+
+        Intent intent = getIntent();
+        product = intent.getParcelableExtra("PRODUCT");
+        product.setLocation(cityName);
+
+
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(sellproduct_location.this,SellProductFinal.class));
+                Intent intent = new Intent(sellproduct_location.this,SellProductFinal.class);
+                intent.putExtra("PRODUCT",product);
+                startActivity(intent);
             }
         });
         btn.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +99,7 @@ public class sellproduct_location extends AppCompatActivity {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 getCurrentLocation();
             }else{
-                Toast.makeText(this,"Permisiion not granted",Toast.LENGTH_LONG).show();
+                Toast.makeText(this,"Permission not granted",Toast.LENGTH_LONG).show();
             }
         }
 
@@ -125,7 +141,7 @@ public class sellproduct_location extends AppCompatActivity {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            String cityName = addresses.get(0).getLocality();
+                            cityName = addresses.get(0).getLocality();
                             String stateName = addresses.get(0).getAddressLine(0);
                             String countryName = addresses.get(0).getCountryName();
 
@@ -138,6 +154,7 @@ public class sellproduct_location extends AppCompatActivity {
                 }, Looper.getMainLooper());
 
     }
+
 
 
 }

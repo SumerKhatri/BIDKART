@@ -1,6 +1,7 @@
 package com.example.bidkart;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +30,7 @@ public class VerifyMobile extends AppCompatActivity {
     private String mVerificationId;
     private EditText OTP;
     private String Number;
+
 
 
     @Override
@@ -118,6 +120,8 @@ public class VerifyMobile extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             //verification successful we will start the profile activity
+                            SharedPreferences sp = getSharedPreferences("My_Shared_Pref",MODE_PRIVATE);
+                            sp.edit().putBoolean("logged",true).apply();
                             Intent intent = new Intent(VerifyMobile.this, Profile.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);

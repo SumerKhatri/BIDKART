@@ -23,14 +23,15 @@ Spinner cat;
 SeekBar sb;
 TextView tv;
 EditText et;
-String description;
+String category;
 Button btn;
+Product product;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sell_product_details);
         Intent i=getIntent();
-        Uri imageUri=Uri.parse(i.getExtras().getString("image_uri"));
+        product = i.getParcelableExtra("PRODUCT");
         cat=findViewById(R.id.spinnerCategory);
         ArrayList<String> arr=new ArrayList<String>();
         arr.add("Mobiles");
@@ -46,7 +47,7 @@ Button btn;
         cat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String category=parent.getItemAtPosition(position).toString();
+                category = parent.getItemAtPosition(position).toString();
                 Toast.makeText(getApplicationContext(),"Selected Item is:"+category,Toast.LENGTH_SHORT);
             }
 
@@ -59,8 +60,11 @@ Button btn;
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                description=et.getText().toString();
+                product.setDescription(et.getText().toString());
+                product.setCondition(tv.getText().toString());
+                product.setCategory(category);
                 Intent intent = new Intent(SellProductDetails.this,sellproduct_location.class);
+                intent.putExtra("PRODUCT",product);
                 startActivity(intent);
                 
             }

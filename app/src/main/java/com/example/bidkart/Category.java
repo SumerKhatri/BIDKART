@@ -1,6 +1,7 @@
 package com.example.bidkart;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -50,6 +51,8 @@ public class Category extends AppCompatActivity {
         });
 
     }
+
+
 
     public void SelectItem(View view)
     {
@@ -108,6 +111,10 @@ public class Category extends AppCompatActivity {
             user.setCategories(mResult);
             String id = dbref.push().getKey();
             user.setUserId(id);
+            SharedPreferences sharedPreferences = getSharedPreferences("My_Shared_Pref",MODE_PRIVATE);
+            SharedPreferences.Editor myedit = sharedPreferences.edit();
+            myedit.putString("user_id",id);
+            myedit.commit();
             dbref.child(id).setValue(user);
 
         }
