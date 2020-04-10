@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -20,11 +20,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class Home extends AppCompatActivity {
     private ImageButton navBtn;
+    private ImageView iv;
+    private FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference=firebaseDatabase.getReference();
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutMAnager;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +65,22 @@ public class Home extends AppCompatActivity {
                 popup.show();
             }
         });
+        ////////////////////////////////////////
+        ArrayList<CardItem> arrayList=new ArrayList<CardItem>();
+        arrayList.add(new CardItem("","book","400","12:00:00"));
+        arrayList.add(new CardItem("","book","400","12:00:00"));
+        arrayList.add(new CardItem("","book","400","12:00:00"));
+        arrayList.add(new CardItem("","book","400","12:00:00"));
+
+        mRecyclerView=findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutMAnager=new LinearLayoutManager(this);
+        mAdapter=new MyAdapter(arrayList);
+
+        mRecyclerView.setLayoutManager(mLayoutMAnager);
+        mRecyclerView.setAdapter(mAdapter);
+
+
     }
 
     private void switchToActivity(CharSequence title) {
