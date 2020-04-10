@@ -60,13 +60,14 @@ public class sellproduct_location extends AppCompatActivity {
 
         Intent intent = getIntent();
         product = intent.getParcelableExtra("PRODUCT");
-        product.setLocation(cityName);
+
 
 
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                product.setLocation(cityName);
                 Intent intent = new Intent(sellproduct_location.this,SellProductFinal.class);
                 intent.putExtra("PRODUCT",product);
                 startActivity(intent);

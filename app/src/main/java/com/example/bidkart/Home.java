@@ -21,15 +21,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Home extends AppCompatActivity {
     private ImageButton navBtn;
+    private GoogleSignInClient signInClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,11 +70,22 @@ public class Home extends AppCompatActivity {
         if(title.equals("Sell Now"))
         startActivity(new Intent(this,SellProduct.class));
         else if(title.equals("Logout")){
-            SharedPreferences sp = getSharedPreferences("My_Shared_Pref",MODE_PRIVATE);
-            sp.edit().putBoolean("logged",false).apply();
-            startActivity(new Intent(Home.this,MainActivity.class));
-            finish();
+            /*SharedPreferences sp = getSharedPreferences("My_Shared_Pref",MODE_PRIVATE);
+            sp.edit().putBoolean("logged",false).apply();*/
+            FirebaseAuth.getInstance().signOut();
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
 
+            GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+            mGoogleSignInClient.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Intent intent = new Intent(Home.this,MainActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
         else  if(title.equals("Share"))
             startActivity(new Intent(this,Share.class));

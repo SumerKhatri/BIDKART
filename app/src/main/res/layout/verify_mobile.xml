@@ -5,7 +5,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/TvEnterOTP"
+        android:id="@+id/TvLoginMobile"
+        android:layout_width="287dp"
+        android:layout_height="63dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2"
+        android:text="Login using Mobile Number (Without Country Code)"
+        android:textAlignment="center"
+        android:gravity="center" />
+
+    <EditText
+        android:id="@+id/ETLoginPhone"
         android:layout_width="287dp"
         android:layout_height="63dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -13,6 +26,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3"
+        android:textAlignment="center"
+        android:gravity="center" />
+
+    <Button
+        android:id="@+id/btn_verify_phone"
+        android:layout_width="287dp"
+        android:layout_height="63dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="Send OTP"/>
+
+
+    <TextView
+        android:id="@+id/TvEnterOTP"
+        android:layout_width="287dp"
+        android:layout_height="63dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5"
         android:text="Enter the OTP sent on your mobile number"
         android:textAlignment="center"
         android:gravity="center" />
@@ -25,7 +64,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.44"
+        app:layout_constraintVertical_bias="0.6"
         android:textAlignment="center"
         android:gravity="center" />
 
@@ -37,7 +76,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55"
+        app:layout_constraintVertical_bias="0.7"
         android:textAlignment="center"
         android:gravity="center"
         android:text="Verify OTP"/>

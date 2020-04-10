@@ -27,8 +27,12 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_name);
 
+        Intent intent = getIntent();
+        user = intent.getParcelableExtra("USER");
+
         cont=findViewById(R.id.cont);
         name=findViewById(R.id.ETentername);
+        name.setText(user.getName());
         skip = findViewById(R.id.btn_skip_login);
 
 
@@ -45,7 +49,7 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Fname = name.getText().toString();
-                user = new User(Fname);
+                user.setName(Fname);
                 Intent intent = new Intent(Profile.this,Category.class);
                 intent.putExtra("USER",user);
                 startActivity(intent);

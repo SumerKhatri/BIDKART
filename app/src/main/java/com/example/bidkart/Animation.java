@@ -36,6 +36,6 @@ TextView name,tag;
                startActivity(new Intent(Animation.this,MainActivity.class));
                finish();
            }
-       },5000);
+       },2500);
     }
 }

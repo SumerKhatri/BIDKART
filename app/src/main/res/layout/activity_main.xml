@@ -16,43 +16,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.68" />
 
-    <TextView
-        android:id="@+id/TvLoginMobile"
-        android:layout_width="287dp"
-        android:layout_height="63dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3"
-        android:text="Login using Mobile Number (Without Country Code)"
-        android:textAlignment="center"
-        android:gravity="center" />
-
-    <EditText
-        android:id="@+id/ETLoginPhone"
-        android:layout_width="287dp"
-        android:layout_height="63dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.44"
-        android:textAlignment="center"
-        android:gravity="center" />
-
-    <Button
-        android:id="@+id/btn_verify_phone"
-        android:layout_width="287dp"
-        android:layout_height="63dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:text="Verify Phone"/>
 
     <Button
         android:id="@+id/btn_test_login"

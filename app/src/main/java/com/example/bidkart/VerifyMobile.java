@@ -30,6 +30,9 @@ public class VerifyMobile extends AppCompatActivity {
     private String mVerificationId;
     private EditText OTP;
     private String Number;
+    EditText PhoneNumber;
+    private Button SendOTP;
+    User user;
 
 
 
@@ -41,11 +44,26 @@ public class VerifyMobile extends AppCompatActivity {
         VerifyOTP = findViewById(R.id.btn_verify_otp);
         OTP = findViewById(R.id.ETEnterOTP);
         mAuth = FirebaseAuth.getInstance();
-        Number = getIntent().getStringExtra("PhoneNumber");
+        SendOTP = findViewById(R.id.btn_verify_phone);
+        PhoneNumber = findViewById(R.id.ETLoginPhone);
+
+        Intent intent = getIntent();
+        user = intent.getParcelableExtra("USER");
 
         //Toast.makeText(getApplicationContext(),Number, Toast.LENGTH_LONG).show();
 
-        sendVerificationCode(Number);
+
+
+        SendOTP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Number = PhoneNumber.getText().toString();
+                validNo(Number);
+                sendVerificationCode(Number);
+                //Toast.makeText(VerifyMobile.this,Number,Toast.LENGTH_LONG).show();
+
+            }
+        });
 
         VerifyOTP.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +80,14 @@ public class VerifyMobile extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void validNo(String no){
+        if(no.isEmpty() || no.length() < 10){
+            PhoneNumber.setError("Enter a valid mobile");
+            PhoneNumber.requestFocus();
+            return;
+        }
     }
 
     private void sendVerificationCode(String Number) {
@@ -114,15 +140,17 @@ public class VerifyMobile extends AppCompatActivity {
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(VerifyMobile.this, new OnCompleteListener<AuthResult>() {
+        mAuth.getCurrentUser().linkWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             //verification successful we will start the profile activity
-                            SharedPreferences sp = getSharedPreferences("My_Shared_Pref",MODE_PRIVATE);
-                            sp.edit().putBoolean("logged",true).apply();
+                            /*SharedPreferences sp = getSharedPreferences("My_Shared_Pref",MODE_PRIVATE);
+                            sp.edit().putBoolean("logged",true).apply();*/
+                            user.setNumber(Number);
                             Intent intent = new Intent(VerifyMobile.this, Profile.class);
+                            intent.putExtra("USER",user);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
 

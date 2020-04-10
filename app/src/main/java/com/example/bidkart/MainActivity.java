@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,37 +27,59 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.auth.UserInfo;
 
 public class MainActivity extends AppCompatActivity {
     private SignInButton signInButton;
     private GoogleSignInClient mGoogleSignInClient;
-    private FirebaseAuth mAuth;
-    private Button VerifyPhone;
+    private FirebaseAuth firebaseAuth;
     private Button Test_login;
     private String TAG = "MainActivity";
-    EditText PhoneNumber;
-    private String Number;
     private int RC_SIGN_IN = 1;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    User user;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseAuth.addAuthStateListener(authStateListener);
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
         }
-        SharedPreferences sp = getSharedPreferences("My_Shared_Pref",MODE_PRIVATE);
+
+        /*SharedPreferences sp = getSharedPreferences("My_Shared_Pref",MODE_PRIVATE);
         if(sp.getBoolean("logged",false)){
             Intent intent = new Intent(MainActivity.this,Home.class);
             startActivity(intent);
-        }
+        }*/
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user!=null)
+                {
+                    Intent intent = new Intent(MainActivity.this,Home.class);
+                    startActivity(intent);
+                }
+            }
+        };
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
 
         signInButton = findViewById(R.id.signInButton);
-        mAuth = FirebaseAuth.getInstance();
-        VerifyPhone = findViewById(R.id.btn_verify_phone);
-        PhoneNumber = findViewById(R.id.ETLoginPhone);
+
         Test_login = findViewById(R.id.btn_test_login);
+        firebaseAuth = FirebaseAuth.getInstance();
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -73,18 +96,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        VerifyPhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Number = PhoneNumber.getText().toString();
-                validNo(Number);
-                Intent intent = new Intent(MainActivity.this,VerifyMobile.class);
-                intent.putExtra("PhoneNumber",Number);
-                startActivity(intent);
-                Toast.makeText(MainActivity.this,Number,Toast.LENGTH_LONG).show();
 
-            }
-        });
 
         Test_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,13 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-    private void validNo(String no){
-        if(no.isEmpty() || no.length() < 10){
-            PhoneNumber.setError("Enter a valid mobile");
-            PhoneNumber.requestFocus();
-            return;
-        }
-    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -127,25 +133,42 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this,"Signed In Successful",Toast.LENGTH_SHORT).show();
             FirebaseGoogleAuth(acc);
         } catch (ApiException e) {
-            Toast.makeText(MainActivity.this,"Signed In Successful",Toast.LENGTH_SHORT).show();
-            FirebaseGoogleAuth(null);
+            Toast.makeText(MainActivity.this,"Signed In Not Successful",Toast.LENGTH_SHORT).show();
+            return;
         }
     }
 
     private void FirebaseGoogleAuth(GoogleSignInAccount acct){
+
+        String uid;
         AuthCredential authCredential = GoogleAuthProvider.getCredential(acct.getIdToken(),null);
-        mAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task task) {
                 if(task.isSuccessful()){
-                    SharedPreferences sp = getSharedPreferences("My_Shared_Pref",MODE_PRIVATE);
-                    sp.edit().putBoolean("logged",true).apply();
-                    Intent intent = new Intent(MainActivity.this,Profile.class);
-                    startActivity(intent);
+                    /*SharedPreferences sp = getSharedPreferences("My_Shared_Pref",MODE_PRIVATE);
+                    sp.edit().putBoolean("logged",true).apply();*/
+                    final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+                    firebaseAuth.fetchSignInMethodsForEmail(firebaseUser.getEmail()).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                            boolean check = !task.getResult().getSignInMethods().isEmpty();
+
+                            if(check)
+                            {
+                                SharedPreferences sharedPreferences = getSharedPreferences("My_Shared_Pref",MODE_PRIVATE);
+                                SharedPreferences.Editor myedit = sharedPreferences.edit();
+                                myedit.putString("user_id",firebaseUser.getUid());
+                                myedit.commit();
+                                already_Reg();
+                            }
+                            else
+                                updateUI(firebaseUser);
+                        }
+                    });
 
                     //Toast.makeText(MainActivity.this,"Signed In Successful",Toast.LENGTH_SHORT).show();
-                    //FirebaseUser user = mAuth.getCurrentUser();
-                    //updateUI(user);
                 }
                 else{
                     Toast.makeText(MainActivity.this,"Sign In Not Successful",Toast.LENGTH_SHORT).show();
@@ -155,16 +178,45 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /*private void updateUI(FirebaseUser fuser){
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-        if(account != null){
-            String personName = account.getDisplayName();
-            String personEmain = account.getEmail();
+    private void updateUI(FirebaseUser fuser){
+        for (UserInfo profile : fuser.getProviderData()) {
+            // Id of the provider (ex: google.com)
+            //String providerId = profile.getProviderId();
 
-            Toast.makeText(MainActivity.this,personName +personName,Toast.LENGTH_SHORT).show();
+            // UID specific to the provider
+            String uid = profile.getUid();
+
+            // Name, email address, and profile photo Url
+            String name = profile.getDisplayName();
+            String email = profile.getEmail();
+            user = new User(uid,name,email);
+            if(profile.getPhotoUrl()!=null)
+            {
+                String photoUrl = profile.getPhotoUrl().toString();
+                user.setProfilepic(photoUrl);
+            }
+
+            Intent intent = new Intent(MainActivity.this,VerifyMobile.class);
+            intent.putExtra("USER",user);
+            startActivity(intent);
         }
 
-    }*/
+    }
+
+    private void already_Reg(){
+
+
+        Intent intent = new Intent(MainActivity.this,Home.class);
+        startActivity(intent);
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(authStateListener!=null)
+        firebaseAuth.removeAuthStateListener(authStateListener);
+    }
 }
 
 
