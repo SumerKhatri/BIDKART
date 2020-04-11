@@ -9,12 +9,32 @@ public class Product implements Parcelable{
     private String description;
     private String category;
     private String condition;
+
+    public  Product(){
+
+    }
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", category='" + category + '\'' +
+                ", condition='" + condition + '\'' +
+                ", imageuri='" + imageuri + '\'' +
+                ", location='" + location + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", duration='" + duration + '\'' +
+                '}';
+    }
+
     private String imageuri;
     private String location;
     private int price,quantity;
     private String duration;
 
-    public Product(String category,String condition,String description,String duration,String id,String imageuri,int price,int quantity,String title) {
+    public Product(String category,String condition,String description,String duration,String id,String imageuri,String location,int price,int quantity,String title) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -26,7 +46,20 @@ public class Product implements Parcelable{
         this.quantity = quantity;
         this.duration = duration;
     }
+    public Product(String duration,String condition,String imageuri,int quantity,int price,String description,String location,String id,String category,String title){
 
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.condition = condition;
+        this.imageuri = imageuri;
+        this.location = location;
+        this.price = price;
+        this.quantity = quantity;
+        this.duration = duration;
+
+    }
     public Product(String title, String imageuri)
     {
         this.title = title;

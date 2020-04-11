@@ -3,6 +3,7 @@ package com.example.bidkart;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,20 +35,27 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class Home extends AppCompatActivity {
     private ImageButton navBtn;
-    private ImageView iv;
-    private FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference=firebaseDatabase.getReference();
+
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private  String userID;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutMAnager;
-
+    private ArrayList<CardItem> arrayList=new ArrayList<CardItem>();
     private GoogleSignInClient signInClient;
 
     @Override
@@ -79,11 +87,48 @@ public class Home extends AppCompatActivity {
             }
         });
         ////////////////////////////////////////
-        ArrayList<CardItem> arrayList=new ArrayList<CardItem>();
-        arrayList.add(new CardItem("","book","400","12:00:00"));
-        arrayList.add(new CardItem("","book","400","12:00:00"));
-        arrayList.add(new CardItem("","book","400","12:00:00"));
-        arrayList.add(new CardItem("","book","400","12:00:00"));
+
+        firebaseAuth=FirebaseAuth.getInstance();
+        FirebaseUser user=firebaseAuth.getCurrentUser();
+        userID=user.getUid();
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        databaseReference=firebaseDatabase.getReference().child("orders");
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    showData(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+//        arrayList.add(new CardItem("","book","400","12:00:00"));
+//        arrayList.add(new CardItem("","book","400","12:00:00"));
+//        arrayList.add(new CardItem("","book","400","12:00:00"));
+//        arrayList.add(new CardItem("","book","400","12:00:00"));
+
+
+
+
+
+
+    }
+
+    private void showData(DataSnapshot dataSnapshot) {
+        arrayList.clear();
+        for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+           for(DataSnapshot snapshot1:snapshot.getChildren()){
+               Product p=snapshot1.getValue(Product.class);
+               Log.d("Product",p.toString());
+
+               arrayList.add(new CardItem(p.getImageuri(),p.getTitle(),p.getPrice()+"",p.getDuration()));
+
+           }
+        }
 
         mRecyclerView=findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
@@ -92,6 +137,8 @@ public class Home extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(mLayoutMAnager);
         mRecyclerView.setAdapter(mAdapter);
+
+
 
 
     }
