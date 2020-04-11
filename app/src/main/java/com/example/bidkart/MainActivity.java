@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private SignInButton signInButton;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth firebaseAuth;
-    private Button Test_login;
-    private String TAG = "MainActivity";
     private int RC_SIGN_IN = 1;
     private FirebaseAuth.AuthStateListener authStateListener;
     User user;
@@ -77,8 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         signInButton = findViewById(R.id.signInButton);
-
-        Test_login = findViewById(R.id.btn_test_login);
         firebaseAuth = FirebaseAuth.getInstance();
 
 
@@ -95,19 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 signIn();
             }
         });
-
-
-
-        Test_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,Profile.class);
-                startActivity(intent);
-            }
-        });
-
-
-
     }
 
         private void signIn(){
@@ -140,14 +123,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void FirebaseGoogleAuth(GoogleSignInAccount acct){
 
-        String uid;
-        AuthCredential authCredential = GoogleAuthProvider.getCredential(acct.getIdToken(),null);
-        firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        String check_mail;
+        final AuthCredential authCredential = GoogleAuthProvider.getCredential(acct.getIdToken(),null);
+        check_mail = acct.getEmail();
+        firebaseAuth.fetchSignInMethodsForEmail(check_mail).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+            @Override
+            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                boolean check = !task.getResult().getSignInMethods().isEmpty();
+                if(check){
+                   already_Reg(authCredential);
+                }
+                else
+                    Register(authCredential);
+            }
+        });
+        /*firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task task) {
                 if(task.isSuccessful()){
-                    /*SharedPreferences sp = getSharedPreferences("My_Shared_Pref",MODE_PRIVATE);
-                    sp.edit().putBoolean("logged",true).apply();*/
+                    *//*SharedPreferences sp = getSharedPreferences("My_Shared_Pref",MODE_PRIVATE);
+                    sp.edit().putBoolean("logged",true).apply();*//*
                     final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
                     firebaseAuth.fetchSignInMethodsForEmail(firebaseUser.getEmail()).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
@@ -175,10 +170,10 @@ public class MainActivity extends AppCompatActivity {
                     //updateUI(null);
                 }
             }
-        });
+        });*/
     }
 
-    private void updateUI(FirebaseUser fuser){
+    /*private void updateUI(FirebaseUser fuser){
         for (UserInfo profile : fuser.getProviderData()) {
             // Id of the provider (ex: google.com)
             //String providerId = profile.getProviderId();
@@ -201,14 +196,54 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+    }*/
+
+    private void already_Reg(AuthCredential authCredential){
+
+        firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                SharedPreferences sharedPreferences = getSharedPreferences("My_Shared_Pref",MODE_PRIVATE);
+                SharedPreferences.Editor myedit = sharedPreferences.edit();
+                myedit.putString("user_id",firebaseUser.getUid());
+                myedit.commit();
+                Intent intent = new Intent(MainActivity.this,Home.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
-    private void already_Reg(){
+    private void Register(AuthCredential authCredential){
+        firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                FirebaseUser fuser = firebaseAuth.getCurrentUser();
+                for (UserInfo profile : fuser.getProviderData()) {
+                    // Id of the provider (ex: google.com)
+                    //String providerId = profile.getProviderId();
 
+                    // UID specific to the provider
+                    String uid = profile.getUid();
 
-        Intent intent = new Intent(MainActivity.this,Home.class);
-        startActivity(intent);
+                    // Name, email address, and profile photo Url
+                    String name = profile.getDisplayName();
+                    String email = profile.getEmail();
+                    user = new User(uid,name,email);
+                    if(profile.getPhotoUrl()!=null)
+                    {
+                        String photoUrl = profile.getPhotoUrl().toString();
+                        user.setProfilepic(photoUrl);
+                    }
 
+                    Intent intent = new Intent(MainActivity.this,VerifyMobile.class);
+                    intent.putExtra("USER",user);
+                    startActivity(intent);
+                }
+
+            }
+        });
     }
 
     @Override

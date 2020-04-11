@@ -18,7 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Profile extends AppCompatActivity {
 
     private EditText name;
-    private Button cont,skip;
+    private Button cont;
     User user;
     String Fname;
 
@@ -33,17 +33,7 @@ public class Profile extends AppCompatActivity {
         cont=findViewById(R.id.cont);
         name=findViewById(R.id.ETentername);
         name.setText(user.getName());
-        skip = findViewById(R.id.btn_skip_login);
-
-
-
-        skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Profile.this,Home.class);
-                startActivity(intent);
-            }
-        });
+        ;
 
         cont.setOnClickListener(new View.OnClickListener() {
             @Override
