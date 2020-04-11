@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F0F8FF"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -21,18 +23,23 @@
         android:id="@+id/ETLoginPhone"
         android:layout_width="287dp"
         android:layout_height="63dp"
+        android:digits="10"
+        android:gravity="center"
+
+        android:hint="Enter Mobile No"
+        android:phoneNumber="true"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3"
-        android:textAlignment="center"
-        android:gravity="center" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <Button
         android:id="@+id/btn_verify_phone"
         android:layout_width="287dp"
         android:layout_height="63dp"
+        android:background="@drawable/custom_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,6 +79,7 @@
         android:id="@+id/btn_verify_otp"
         android:layout_width="287dp"
         android:layout_height="63dp"
+        android:background="@drawable/custom_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
