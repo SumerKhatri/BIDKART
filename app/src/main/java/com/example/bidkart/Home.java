@@ -2,6 +2,7 @@ package com.example.bidkart;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.widget.ImageButton;
 
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -45,6 +47,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -79,7 +82,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        navBtn = findViewById(R.id.navigation_menu);
+     //   navBtn = findViewById(R.id.navigation_menu);
 
         navigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -91,24 +94,24 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
 
-        navBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(Home.this, v);
-             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                 @Override
-                 public boolean onMenuItemClick(MenuItem item) {
-                     Toast.makeText(getApplicationContext(), "Selected Item: " + item.getTitle(), Toast.LENGTH_SHORT).show();
-                    switchToActivity(item.getTitle());
-                     return false;
-                 }
-             });
-                popup.inflate(R.menu.navigation_menu);
-
-
-                popup.show();
-            }
-        });
+//        navBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                PopupMenu popup = new PopupMenu(Home.this, v);
+//             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                 @Override
+//                 public boolean onMenuItemClick(MenuItem item) {
+//                     Toast.makeText(getApplicationContext(), "Selected Item: " + item.getTitle(), Toast.LENGTH_SHORT).show();
+//                    switchToActivity(item.getTitle());
+//                     return false;
+//                 }
+//             });
+//                popup.inflate(R.menu.navigation_menu);
+//
+//
+//                popup.show();
+//            }
+//        });
         ////////////////////////////////////////
 
         firebaseAuth=FirebaseAuth.getInstance();
@@ -116,6 +119,26 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         userID=user.getUid();
         firebaseDatabase=FirebaseDatabase.getInstance();
         databaseReference=firebaseDatabase.getReference().child("orders");
+     DatabaseReference   dRef_Users=firebaseDatabase.getReference().child("users").child(userID);
+
+    dRef_Users.addListenerForSingleValueEvent(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User u=dataSnapshot.getValue(User.class);
+                ImageView iv=findViewById(R.id.profile_pic);
+            TextView tv=findViewById(R.id.profile_name);
+            tv.setText("Welcome "+u.getName());
+            Picasso.get().load(Uri.parse(u.getProfilepic())).into(iv);
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    });
+
+
+
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

@@ -7,13 +7,25 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 public class User implements Parcelable {
-
     private String userId;
     private String name;
     private ArrayList<String> categories;
     private String number;
     private String email;
     private String profilepic;
+public User(){
+
+}
+    public User(String userId, String name, ArrayList<String> categories, String number, String email, String profilepic) {
+        this.userId = userId;
+        this.name = name;
+        this.categories = categories;
+        this.number = number;
+        this.email = email;
+        this.profilepic = profilepic;
+    }
+
+
 
     public User(String userId, String name, String email) {
         this.userId = userId;

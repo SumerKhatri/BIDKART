@@ -8,23 +8,28 @@
     android:gravity="bottom">
 
     <ImageView
+        android:id="@+id/profile_pic"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:background="#524B40"
-         />
+        android:layout_marginLeft="100dp"
+        android:layout_marginBottom="10dp"
+        android:background="#524B40" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="90dp"
+        android:layout_marginBottom="10dp"
         android:text="BIDKART"
-        android:textSize="24sp"
-         />
+        android:textSize="24sp" />
 
     <TextView
+        android:id="@+id/profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_marginBottom="20dp"
         android:text="bet it and get it"
-        android:textSize="14sp"
-         />
+        android:textSize="14sp" />
 
 </LinearLayout>
