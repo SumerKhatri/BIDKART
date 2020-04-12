@@ -28,6 +28,8 @@ public class Category extends AppCompatActivity {
     DatabaseReference dbref;
     FirebaseDatabase database;
 
+    //jsut to see everything works fine or not
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
