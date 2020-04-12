@@ -140,7 +140,7 @@ public class SellProductFinal extends AppCompatActivity {
         return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
     }
     private void  add_product() {
-
+        //This is product id
         String id = dbref.push().getKey();
         product.setId(id);
        // product.setImageuri(image_uri);

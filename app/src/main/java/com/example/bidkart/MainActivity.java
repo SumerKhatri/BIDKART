@@ -225,8 +225,8 @@ public class MainActivity extends AppCompatActivity {
                     //String providerId = profile.getProviderId();
 
                     // UID specific to the provider
-                    String uid = profile.getUid();
-
+                   // String uid = profile.getUid();
+                    String uid=fuser.getUid();
                     // Name, email address, and profile photo Url
                     String name = profile.getDisplayName();
                     String email = profile.getEmail();
