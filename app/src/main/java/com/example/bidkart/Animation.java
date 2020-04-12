@@ -23,7 +23,7 @@ TextView name,tag;
         top= AnimationUtils.loadAnimation(this,R.anim.top_animation);
         bottom= AnimationUtils.loadAnimation(this,R.anim.bottom_animation);
 
-        iv=findViewById(R.id.imageView);
+        iv=findViewById(R.id.imageView_Selling);
         name=findViewById(R.id.textView18);
         tag=findViewById(R.id.textView19);
 
