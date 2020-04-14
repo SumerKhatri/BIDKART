@@ -1,6 +1,8 @@
 package com.example.bidkart;
 
+import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private ArrayList<CardItem> arrayList;
 
+
     public MyAdapter(ArrayList<CardItem> arrayList) {
         this.arrayList = arrayList;
     }
@@ -32,6 +35,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             title=itemView.findViewById(R.id.item_title);
             price= itemView.findViewById(R.id.item_price);
             time=itemView.findViewById(R.id.time_remaining);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                  Intent i=new Intent(v.getContext(),Selling.class);
+                  i.putExtra("position",getAdapterPosition()+"");
+                    v.getContext().startActivity(i);
+                }
+            });
         }
     }
 
@@ -40,11 +51,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cardview,parent,false);
         MyViewHolder mvh=new MyViewHolder(v);
+
         return mvh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
         CardItem currentItem=arrayList.get(position);
      //   holder.imageView.setImageURI(Uri.parse(currentItem.getImageUri()));
         Picasso.get().load(currentItem.getImageUri()).into(holder.imageView);
@@ -57,4 +70,5 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public int getItemCount() {
         return arrayList.size();
     }
+
 }

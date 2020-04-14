@@ -30,7 +30,8 @@ ArrayList <CardItem_Selling> arrayList=new ArrayList<CardItem_Selling>();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selling);
-
+        int pos=Integer.parseInt(getIntent().getStringExtra("position"));
+        Log.d("Product Clicked is:",Home.pdb.getPdb().get(pos)+"");
         firebaseAuth= FirebaseAuth.getInstance();
         FirebaseUser user=firebaseAuth.getCurrentUser();
         userID=user.getUid();
