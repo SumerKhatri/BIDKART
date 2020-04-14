@@ -239,6 +239,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(new Intent(this,Bids.class));
         else  if(title.equals("Wins"))
             startActivity(new Intent(this,Wins.class));
+        else if(title.equals("Home")){
+            startActivity(new Intent(this,Home.class));
+        }
     }
 
     @Override

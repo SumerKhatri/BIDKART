@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,8 +29,7 @@ ArrayList <CardItem_Selling> arrayList=new ArrayList<CardItem_Selling>();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selling);
-        int pos=Integer.parseInt(getIntent().getStringExtra("position"));
-        Log.d("Product Clicked is:",Home.pdb.getPdb().get(pos)+"");
+
         firebaseAuth= FirebaseAuth.getInstance();
         FirebaseUser user=firebaseAuth.getCurrentUser();
         userID=user.getUid();
@@ -73,7 +71,7 @@ ArrayList <CardItem_Selling> arrayList=new ArrayList<CardItem_Selling>();
 
         }
 
-        RecyclerView mRecyclerView = findViewById(R.id.recyclerView_Selling);
+        RecyclerView mRecyclerView = findViewById(R.id.recyclerView_Watchlist);
         mRecyclerView.setHasFixedSize(true);
       RecyclerView.LayoutManager  mLayoutMAnager=new LinearLayoutManager(this);
        Adapter mAdapter=new MyAdapter_Selling(arrayList);
