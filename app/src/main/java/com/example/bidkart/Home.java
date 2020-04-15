@@ -210,8 +210,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 }
             });
         }
-        else  if(title.equals("Share"))
+        else  if(title.equals("Share")){
             startActivity(new Intent(this,Share.class));
+            Intent myIntent = new Intent(Intent.ACTION_SEND);
+            myIntent.setType("text/plain");
+            String body = "https://github.com/SumerKhatri/BIDKART";
+            String sub = "Get our app from following link";
+            myIntent.putExtra(Intent.EXTRA_SUBJECT,sub);
+            myIntent.putExtra(Intent.EXTRA_TEXT,body);
+            startActivity(Intent.createChooser(myIntent, "Share Using"));
+        }
         else  if(title.equals("About"))
             startActivity(new Intent(this,About.class));
         else  if(title.equals("Exit"))

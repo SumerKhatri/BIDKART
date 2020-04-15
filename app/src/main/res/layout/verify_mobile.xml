@@ -17,6 +17,8 @@
         android:textAlignment="center"
         android:gravity="center" />
 
+
+
     <EditText
         android:id="@+id/ETLoginPhone"
         android:layout_width="287dp"
