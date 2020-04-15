@@ -182,19 +182,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
            }
         }
 
-        mRecyclerView=findViewById(R.id.recyclerView);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutMAnager=new LinearLayoutManager(this);
-        mAdapter=new MyAdapter(arrayList);
 
-        mRecyclerView.setLayoutManager(mLayoutMAnager);
-        mRecyclerView.setAdapter(mAdapter);
-
+        loadData(arrayList);
 
 
 
     }
+    public void loadData(ArrayList<CardItem> items){
+        mRecyclerView=findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutMAnager=new LinearLayoutManager(this);
+        mAdapter=new MyAdapter(items);
 
+        mRecyclerView.setLayoutManager(mLayoutMAnager);
+        mRecyclerView.setAdapter(mAdapter);
+    }
     private void switchToActivity(CharSequence title) {
         if(title.equals("Sell Now"))
         startActivity(new Intent(this,SellProduct.class));
@@ -216,8 +218,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 }
             });
         }
-        else  if(title.equals("Share"))
+        else  if(title.equals("Share")){
             startActivity(new Intent(this,Share.class));
+            Intent myIntent = new Intent(Intent.ACTION_SEND);
+            myIntent.setType("text/plain");
+            String body = "https://github.com/SumerKhatri/BIDKART";
+            String sub = "Get our app from following link";
+            myIntent.putExtra(Intent.EXTRA_SUBJECT,sub);
+            myIntent.putExtra(Intent.EXTRA_TEXT,body);
+            startActivity(Intent.createChooser(myIntent, "Share Using"));
+        }
         else  if(title.equals("About"))
             startActivity(new Intent(this,About.class));
         else  if(title.equals("Exit"))
@@ -239,6 +249,29 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(new Intent(this,Bids.class));
         else  if(title.equals("Wins"))
             startActivity(new Intent(this,Wins.class));
+        else if(title.equals("Home")){
+            startActivity(new Intent(this,Home.class));
+
+        }
+        else if(title.equals("Search")){
+            TextView tv=findViewById(R.id.searchInput);
+            String input=tv.getText().toString();
+            if(input.isEmpty()){
+                loadData(arrayList);
+                return;
+            }else {
+                ArrayList<Product> items=Home.pdb.searchByTitle(input);
+                if(items==null)
+                    return;
+                else{
+                    ArrayList<CardItem> ci=new ArrayList<>();
+                    for(int i=0;i<items.size();i++){
+                        ci.add(new CardItem(items.get(i).getImageuri(),items.get(i).getTitle(),items.get(i).getPrice()+"",items.get(i).getDuration()));
+                    }
+                    loadData(ci);
+                }
+            }
+        }
     }
 
     @Override
