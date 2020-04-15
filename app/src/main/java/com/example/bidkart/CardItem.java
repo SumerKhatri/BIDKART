@@ -3,12 +3,16 @@ package com.example.bidkart;
 public class CardItem {
 private String imageUri,title,price,time;
 
+
     public CardItem(String imageUri, String title, String price, String time) {
         this.imageUri = imageUri;
         this.title = title;
         this.price = price;
         this.time = time;
+
     }
+
+
 
     public String getImageUri() {
         return imageUri;

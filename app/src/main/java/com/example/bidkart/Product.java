@@ -9,6 +9,15 @@ public class Product implements Parcelable{
     private String description;
     private String category;
     private String condition;
+    int pos;
+
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
+    }
 
     public  Product(){
 

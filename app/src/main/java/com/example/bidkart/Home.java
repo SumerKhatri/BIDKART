@@ -68,7 +68,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private RecyclerView.LayoutManager mLayoutMAnager;
     private ArrayList<CardItem> arrayList=new ArrayList<CardItem>();
     private GoogleSignInClient signInClient;
-
+    public static ProductDB pdb=new ProductDB();
+    public static User currentUser;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -124,11 +125,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     dRef_Users.addListenerForSingleValueEvent(new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User u=dataSnapshot.getValue(User.class);
+                 currentUser=dataSnapshot.getValue(User.class);
                 ImageView iv=findViewById(R.id.profile_pic);
             TextView tv=findViewById(R.id.profile_name);
-            tv.setText("Welcome "+u.getName());
-            Picasso.get().load(Uri.parse(u.getProfilepic())).into(iv);
+            tv.setText("Welcome "+currentUser.getName());
+            Picasso.get().load(Uri.parse(currentUser.getProfilepic())).into(iv);
         }
 
         @Override
@@ -166,9 +167,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private void showData(DataSnapshot dataSnapshot) {
         arrayList.clear();
+        pdb.clear();
+        int pos=0;
         for(DataSnapshot snapshot:dataSnapshot.getChildren()){
            for(DataSnapshot snapshot1:snapshot.getChildren()){
                Product p=snapshot1.getValue(Product.class);
+               p.setPos(pos);
+               pos++;
+               pdb.add(p);
                Log.d("Product",p.toString());
 
                arrayList.add(new CardItem(p.getImageuri(),p.getTitle(),p.getPrice()+"",p.getDuration()));
@@ -241,6 +247,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(new Intent(this,Bids.class));
         else  if(title.equals("Wins"))
             startActivity(new Intent(this,Wins.class));
+        else if(title.equals("Home")){
+            startActivity(new Intent(this,Home.class));
+        }
     }
 
     @Override
