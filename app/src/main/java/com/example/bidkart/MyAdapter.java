@@ -38,7 +38,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                  Intent i=new Intent(v.getContext(),Selling.class);
+                  Intent i=new Intent(v.getContext(),Place_Bid.class);
                   i.putExtra("position",getAdapterPosition()+"");
                     v.getContext().startActivity(i);
                 }

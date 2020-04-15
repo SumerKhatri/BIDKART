@@ -83,7 +83,8 @@ public class SellProductFinal extends AppCompatActivity {
         sell_final.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                product.setPrice(Integer.parseInt(price.getText().toString()));
+                product.setBase_price(Integer.parseInt(price.getText().toString()));
+                product.setCurrent_price(Integer.parseInt(price.getText().toString()));
                 product.setQuantity(Integer.parseInt(quantity.getText().toString()));
 
 

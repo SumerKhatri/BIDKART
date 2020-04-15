@@ -177,7 +177,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                pdb.add(p);
                Log.d("Product",p.toString());
 
-               arrayList.add(new CardItem(p.getImageuri(),p.getTitle(),p.getPrice()+"",p.getDuration()));
+               arrayList.add(new CardItem(p.getImageuri(),p.getTitle(),p.getCurrent_price()+"",p.getDuration()));
 
            }
         }
