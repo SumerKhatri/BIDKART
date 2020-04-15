@@ -54,15 +54,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 public boolean onLongClick(View v) {
                     PopupMenu popup = new PopupMenu(itemView.getContext(), v);
 
-             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                 @Override
-                 public boolean onMenuItemClick(MenuItem item) {
-                    Intent i=new Intent(itemView.getContext(),Watchlist.class);
-                    i.putExtra("position",getAdapterPosition()+"");
-                   itemView.getContext().startActivity(i);
-                     return true;
-                 }
-             });
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            Intent i=new Intent(itemView.getContext(),Watchlist.class);
+                            i.putExtra("position",getAdapterPosition()+"");
+                            itemView.getContext().startActivity(i);
+                            return true;
+                        }
+                    });
 
 
                 popup.inflate(R.menu.card_menu);

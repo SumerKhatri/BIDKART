@@ -27,17 +27,23 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 public class Watchlist extends AppCompatActivity {
-String id;
+String id="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watchlist);
-      int pos=Integer.parseInt(getIntent().getStringExtra("position"));
-       Log.d("Product Clicked is:",Home.pdb.getPdb().get(pos)+"");
+        String s=getIntent().getStringExtra("position");
+        int pos;
+        if(s!=null){
+             pos=Integer.parseInt(s);
+            id=Home.pdb.getPdb().get(pos).getId();
+        }
+
+     //  Log.d("Product Clicked is:",Home.pdb.getPdb().get(pos)+"");
 
 
 
-       id=Home.pdb.getPdb().get(pos).getId();
+
         String data= readFromFile(getApplicationContext());
         if(!data.contains(id))
         writeToFile(id+data,getApplicationContext());

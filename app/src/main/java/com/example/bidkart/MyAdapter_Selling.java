@@ -1,9 +1,13 @@
 package com.example.bidkart;
 
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,11 +28,36 @@ public class MyAdapter_Selling extends RecyclerView.Adapter<MyAdapter_Selling.My
         public ImageView imageView;
         public TextView title;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull final View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView_Selling);
             title = itemView.findViewById(R.id.title_selling);
+            //Log.d("current Activity",itemView.getContext().getClass()+"");
+            if(itemView.getContext().getClass().toString().equals("class com.example.bidkart.Watchlist")){
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        PopupMenu popup = new PopupMenu(itemView.getContext(), v);
 
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                Intent i=new Intent(itemView.getContext(),Watchlist.class);
+                                i.putExtra("position",getAdapterPosition()+"");
+                                itemView.getContext().startActivity(i);
+                                return true;
+                            }
+                        });
+
+
+                        popup.inflate(R.menu.card_menu);
+
+
+                        popup.show();
+                        return true;
+                    }
+                });
+            }
         }
     }
 

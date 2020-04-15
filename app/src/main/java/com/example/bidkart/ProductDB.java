@@ -41,6 +41,22 @@ public class ProductDB {
         else
             return null;
     }
+    public ArrayList<Product> searchByTitle(String title){
+        int pos=-1;
+
+        ArrayList<Product>items=new ArrayList<>();
+        for (int i=0;i<pdb.size();i++){
+            if(pdb.get(i).getTitle().contains(title)){
+                pos=i;
+                items.add(pdb.get(i));
+            }
+        }
+
+        if(pos!=-1)
+            return items;
+        else
+            return null;
+    }
     public  void clear(){
         pdb.clear();
     }
