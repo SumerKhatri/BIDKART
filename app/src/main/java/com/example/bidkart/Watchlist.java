@@ -32,11 +32,11 @@ String id="";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watchlist);
-        String s=getIntent().getStringExtra("position");
-        int pos;
+        String s=getIntent().getStringExtra("title");
+       // int pos;
         if(s!=null){
-             pos=Integer.parseInt(s);
-            id=Home.pdb.getPdb().get(pos).getId();
+          //   pos=Integer.parseInt(s);
+            id=Home.pdb.searchByTitleSingle(s).getId();
         }
 
      //  Log.d("Product Clicked is:",Home.pdb.getPdb().get(pos)+"");
