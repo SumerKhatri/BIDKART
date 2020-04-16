@@ -170,31 +170,33 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         pdb.clear();
         int pos=0;
         for(DataSnapshot snapshot:dataSnapshot.getChildren()){
-           for(DataSnapshot snapshot1:snapshot.getChildren()){
-               Product p=snapshot1.getValue(Product.class);
+
+               Product p=snapshot.getValue(Product.class);
                p.setPos(pos);
                pos++;
                pdb.add(p);
                Log.d("Product",p.toString());
 
-               arrayList.add(new CardItem(p.getImageuri(),p.getTitle(),p.getPrice()+"",p.getDuration()));
+               arrayList.add(new CardItem(p.getImageuri(),p.getTitle(),p.getCurrent_price()+"",p.getDuration()));
 
-           }
+
         }
 
-        mRecyclerView=findViewById(R.id.recyclerView);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutMAnager=new LinearLayoutManager(this);
-        mAdapter=new MyAdapter(arrayList);
 
-        mRecyclerView.setLayoutManager(mLayoutMAnager);
-        mRecyclerView.setAdapter(mAdapter);
-
+        loadData(arrayList);
 
 
 
     }
+    public void loadData(ArrayList<CardItem> items){
+        mRecyclerView=findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutMAnager=new LinearLayoutManager(this);
+        mAdapter=new MyAdapter(items);
 
+        mRecyclerView.setLayoutManager(mLayoutMAnager);
+        mRecyclerView.setAdapter(mAdapter);
+    }
     private void switchToActivity(CharSequence title) {
         if(title.equals("Sell Now"))
         startActivity(new Intent(this,SellProduct.class));
@@ -249,6 +251,26 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(new Intent(this,Wins.class));
         else if(title.equals("Home")){
             startActivity(new Intent(this,Home.class));
+
+        }
+        else if(title.equals("Search")){
+            TextView tv=findViewById(R.id.searchInput);
+            String input=tv.getText().toString();
+            if(input.isEmpty()){
+                loadData(arrayList);
+                return;
+            }else {
+                ArrayList<Product> items=Home.pdb.searchByTitle(input);
+                if(items==null)
+                    return;
+                else{
+                    ArrayList<CardItem> ci=new ArrayList<>();
+                    for(int i=0;i<items.size();i++){
+                        ci.add(new CardItem(items.get(i).getImageuri(),items.get(i).getTitle(),items.get(i).getCurrent_price()+"",items.get(i).getDuration()));
+                    }
+                    loadData(ci);
+                }
+            }
         }
     }
 

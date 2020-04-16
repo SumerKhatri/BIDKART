@@ -9,7 +9,12 @@ public class Product implements Parcelable{
     private String description;
     private String category;
     private String condition;
-    int pos;
+    private String imageuri;
+    private String location;
+    private int base_price,quantity,current_price;
+    private String duration;
+    private int pos;
+    private String user_id;
 
     public int getPos() {
         return pos;
@@ -32,18 +37,17 @@ public class Product implements Parcelable{
                 ", condition='" + condition + '\'' +
                 ", imageuri='" + imageuri + '\'' +
                 ", location='" + location + '\'' +
-                ", price=" + price +
+                ", base_price=" + base_price +
+                ", current_price=" + current_price +
                 ", quantity=" + quantity +
                 ", duration='" + duration + '\'' +
+                ", user_id='" + user_id + '\'' +
                 '}';
     }
 
-    private String imageuri;
-    private String location;
-    private int price,quantity;
-    private String duration;
 
-    public Product(String category,String condition,String description,String duration,String id,String imageuri,String location,int price,int quantity,String title) {
+
+    public Product(String category,String condition,String description,String duration,String id,String imageuri,String location,int base_price,int quantity,String title,int current_price,String user_id) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -51,11 +55,13 @@ public class Product implements Parcelable{
         this.condition = condition;
         this.imageuri = imageuri;
         this.location = location;
-        this.price = price;
+        this.base_price = base_price;
         this.quantity = quantity;
         this.duration = duration;
+        this.current_price = current_price;
+        this.user_id = user_id;
     }
-    public Product(String duration,String condition,String imageuri,int quantity,int price,String description,String location,String id,String category,String title){
+    public Product(String duration,String condition,String imageuri,int quantity,int base_price,String description,String location,String id,String category,String title,int current_price,String user_id){
 
         this.id = id;
         this.title = title;
@@ -64,9 +70,11 @@ public class Product implements Parcelable{
         this.condition = condition;
         this.imageuri = imageuri;
         this.location = location;
-        this.price = price;
+        this.base_price = base_price;
         this.quantity = quantity;
         this.duration = duration;
+        this.current_price = current_price;
+        this.user_id = user_id;
 
     }
     public Product(String title, String imageuri)
@@ -83,9 +91,11 @@ public class Product implements Parcelable{
         condition = in.readString();
         imageuri = in.readString();
         location = in.readString();
-        price = in.readInt();
+        base_price = in.readInt();
         quantity = in.readInt();
         duration = in.readString();
+        current_price = in.readInt();
+        user_id = in.readString();
     }
 
     @Override
@@ -97,9 +107,11 @@ public class Product implements Parcelable{
         dest.writeString(condition);
         dest.writeString(imageuri);
         dest.writeString(location);
-        dest.writeInt(price);
+        dest.writeInt(base_price);
         dest.writeInt(quantity);
         dest.writeString(duration);
+        dest.writeInt(current_price);
+        dest.writeString(user_id);
 
     }
 
@@ -176,12 +188,12 @@ public class Product implements Parcelable{
         this.location = location;
     }
 
-    public int getPrice() {
-        return price;
+    public int getBase_price() {
+        return base_price;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setBase_price(int price) {
+        this.base_price = price;
     }
 
     public int getQuantity() {
@@ -198,5 +210,21 @@ public class Product implements Parcelable{
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public int getCurrent_price() {
+        return current_price;
+    }
+
+    public void setCurrent_price(int current_price) {
+        this.current_price = current_price;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }

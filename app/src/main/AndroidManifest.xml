@@ -40,6 +40,7 @@
         <activity android:name=".VerifyMobile" />
         <activity android:name=".Profile" />
         <activity android:name=".Category" />
+        <activity android:name=".Place_Bid"/>
     </application>
 
 </manifest>
