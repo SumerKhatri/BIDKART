@@ -13,8 +13,8 @@ public class Product implements Parcelable{
     private String location;
     private int base_price,quantity,current_price;
     private String duration;
-    private
-    int pos;
+    private int pos;
+    private String user_id;
 
     public int getPos() {
         return pos;
@@ -41,12 +41,13 @@ public class Product implements Parcelable{
                 ", current_price=" + current_price +
                 ", quantity=" + quantity +
                 ", duration='" + duration + '\'' +
+                ", user_id='" + user_id + '\'' +
                 '}';
     }
 
 
 
-    public Product(String category,String condition,String description,String duration,String id,String imageuri,String location,int base_price,int quantity,String title,int current_price) {
+    public Product(String category,String condition,String description,String duration,String id,String imageuri,String location,int base_price,int quantity,String title,int current_price,String user_id) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -58,8 +59,9 @@ public class Product implements Parcelable{
         this.quantity = quantity;
         this.duration = duration;
         this.current_price = current_price;
+        this.user_id = user_id;
     }
-    public Product(String duration,String condition,String imageuri,int quantity,int base_price,String description,String location,String id,String category,String title,int current_price){
+    public Product(String duration,String condition,String imageuri,int quantity,int base_price,String description,String location,String id,String category,String title,int current_price,String user_id){
 
         this.id = id;
         this.title = title;
@@ -72,6 +74,7 @@ public class Product implements Parcelable{
         this.quantity = quantity;
         this.duration = duration;
         this.current_price = current_price;
+        this.user_id = user_id;
 
     }
     public Product(String title, String imageuri)
@@ -92,6 +95,7 @@ public class Product implements Parcelable{
         quantity = in.readInt();
         duration = in.readString();
         current_price = in.readInt();
+        user_id = in.readString();
     }
 
     @Override
@@ -107,6 +111,7 @@ public class Product implements Parcelable{
         dest.writeInt(quantity);
         dest.writeString(duration);
         dest.writeInt(current_price);
+        dest.writeString(user_id);
 
     }
 
@@ -213,5 +218,13 @@ public class Product implements Parcelable{
 
     public void setCurrent_price(int current_price) {
         this.current_price = current_price;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }

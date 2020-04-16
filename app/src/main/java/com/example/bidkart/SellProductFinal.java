@@ -122,17 +122,13 @@ public class SellProductFinal extends AppCompatActivity implements NavigationVie
                 product.setBase_price(Integer.parseInt(price.getText().toString()));
                 product.setCurrent_price(Integer.parseInt(price.getText().toString()));
                 product.setQuantity(Integer.parseInt(quantity.getText().toString()));
-
-
-                uploader(product.getImageuri());
-
-
                 product.setDuration(days);
+
                 SharedPreferences sh = getSharedPreferences("My_Shared_Pref", MODE_PRIVATE);
                 user_id = sh.getString("user_id", "");
+                product.setUser_id(user_id);
 
-
-
+                uploader(product.getImageuri());
 
             }
         });
@@ -182,7 +178,7 @@ public class SellProductFinal extends AppCompatActivity implements NavigationVie
         product.setId(id);
        // product.setImageuri(image_uri);
        // Log.d("url",image_uri+"");
-        dbref.child(user_id).child(id).setValue(product);
+        dbref.child(id).setValue(product);
     }
 
     @Override

@@ -45,9 +45,10 @@ public class Place_Bid extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         int pos = Integer.parseInt(getIntent().getStringExtra("position"));
+        product = Home.pdb.getProduct(pos);
         price = product.getCurrent_price();
         base_price = product.getBase_price();
-        product = Home.pdb.getProduct(pos);
+
 
         setContentView(R.layout.activity_place_bid);
 
@@ -110,17 +111,18 @@ public class Place_Bid extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String bid_id = databaseReference.child(product.getId()).push().getKey();
-                Bid_Data bid_data = new Bid_Data(user_name,Integer.parseInt(current_price.getText().toString()),"10000",user_id);
+                int cur_price = Integer.parseInt(current_price.getText().toString());
+                Bid_Data bid_data = new Bid_Data(user_name,cur_price,"10000",user_id);
                 databaseReference.child(product.getId()).child(bid_id).setValue(bid_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
                         DatabaseReference product_reference = firebaseDatabase.getReference("orders");
-                        product_reference.child(product.getId()).child("current_price").setValue(price += price/10).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        product_reference.child(product.getId()).child("current_price").setValue(price += base_price/10).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 Fragment_History fragment_history = (Fragment_History)getSupportFragmentManager().findFragmentById(R.id.fragment);
-                                current_price.setText((price += price / 10).toString());
+                                current_price.setText((price).toString());
                             }
                         });
 

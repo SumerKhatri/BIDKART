@@ -41,6 +41,11 @@ public class ProductDB {
         else
             return null;
     }
+
+    public Product getProduct(int i){
+        return pdb.get(i);
+    }
+
     public ArrayList<Product> searchByTitle(String title){
         int pos=-1;
 

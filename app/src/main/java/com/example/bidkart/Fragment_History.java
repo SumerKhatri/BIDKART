@@ -19,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONObject;
 
@@ -45,7 +46,21 @@ public class Fragment_History extends Fragment {
 
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference("bids");
-            databaseReference.child(((Place_Bid)getActivity()).product.getId()).addChildEventListener(new ChildEventListener() {
+            databaseReference.child(((Place_Bid)getActivity()).product.getId()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    bid_data_list = getData(dataSnapshot);
+                    adapter_bidding = new Adapter_Bidding(bid_data_list,getActivity());
+                    recyclerView.setAdapter(adapter_bidding);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            /*databaseReference.child(((Place_Bid)getActivity()).product.getId()).addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     bid_data_list = getData(dataSnapshot);
@@ -75,7 +90,7 @@ public class Fragment_History extends Fragment {
                 }
 
             });
-
+*/
         }
         return view;
     }
@@ -91,16 +106,17 @@ public class Fragment_History extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }*/
 
-    public ArrayList<Bid_Data> getData(DataSnapshot dataSnapshot){
+    public ArrayList<Bid_Data> getData(DataSnapshot dataSnapshot) {
 
         ArrayList<Bid_Data> bid_info = new ArrayList<>();
         int pos = 0;
-        for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                 Bid_Data bid_data = snapshot.getValue(Bid_Data.class);
-                bid_info.set(pos, bid_data);
-                pos++;
-                Log.d("Bid_Data",bid_data.toString());
-            }
+            bid_info.add(pos,bid_data);
+            pos++;
+            Log.d("Bid_Data", bid_data.toString());
+
+        }
         return  bid_info;
     }
 

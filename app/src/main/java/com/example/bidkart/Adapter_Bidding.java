@@ -1,6 +1,7 @@
 package com.example.bidkart;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,17 @@ public class Adapter_Bidding extends RecyclerView.Adapter<BiddingHistory_Viewhol
         holder.bidder_name.setText(current_data.bidder_name);
         holder.bid_price.setText(current_data.bid_price.toString());
         holder.bid_time.setText(current_data.bid_time);
+
+        /*if(position %2 == 1)
+        {
+            holder.itemView.setBackgroundColor(Color.parseColor("#E6E6FA"));
+            //  holder.imageView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        else
+        {
+            holder.itemView.setBackgroundColor(Color.parseColor("#F2F2F2"));
+            //  holder.imageView.setBackgroundColor(Color.parseColor("#FFFAF8FD"));
+        }*/
 
     }
 

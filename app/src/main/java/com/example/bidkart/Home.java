@@ -170,8 +170,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         pdb.clear();
         int pos=0;
         for(DataSnapshot snapshot:dataSnapshot.getChildren()){
-           for(DataSnapshot snapshot1:snapshot.getChildren()){
-               Product p=snapshot1.getValue(Product.class);
+
+               Product p=snapshot.getValue(Product.class);
                p.setPos(pos);
                pos++;
                pdb.add(p);
@@ -179,7 +179,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
                arrayList.add(new CardItem(p.getImageuri(),p.getTitle(),p.getCurrent_price()+"",p.getDuration()));
 
-           }
+
         }
 
 
@@ -266,7 +266,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 else{
                     ArrayList<CardItem> ci=new ArrayList<>();
                     for(int i=0;i<items.size();i++){
-                        ci.add(new CardItem(items.get(i).getImageuri(),items.get(i).getTitle(),items.get(i).getPrice()+"",items.get(i).getDuration()));
+                        ci.add(new CardItem(items.get(i).getImageuri(),items.get(i).getTitle(),items.get(i).getCurrent_price()+"",items.get(i).getDuration()));
                     }
                     loadData(ci);
                 }
