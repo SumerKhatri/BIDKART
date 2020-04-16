@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
-    private ArrayList<CardItem> arrayList;
+    private static ArrayList<CardItem> arrayList;
 
 
     public MyAdapter(ArrayList<CardItem> arrayList) {
@@ -58,7 +58,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             Intent i=new Intent(itemView.getContext(),Watchlist.class);
-                            i.putExtra("position",getAdapterPosition()+"");
+                            CardItem currentItem=arrayList.get(getAdapterPosition());
+                            i.putExtra("title",currentItem.getTitle());
                             itemView.getContext().startActivity(i);
                             return true;
                         }
@@ -95,6 +96,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.price.setText(currentItem.getPrice());
         holder.title.setText(currentItem.getTitle());
         holder.time.setText(currentItem.getTime());
+
     }
 
     @Override

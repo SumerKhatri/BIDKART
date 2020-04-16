@@ -146,22 +146,29 @@ private DrawerLayout drawerLayout;
 
     private void showData(DataSnapshot dataSnapshot) {
         arrayList.clear();
-        Log.d("current user_id:",userID);
-        if(userID==null)
+        Log.d("current user_id:", userID);
+        if (userID == null)
             return;
-        for(DataSnapshot snapshot:dataSnapshot.getChildren()){
-            if(snapshot.getKey().equals(userID)) {
-            Log.d("User_id  database is:",snapshot.getKey());
-                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                    Product p = snapshot1.getValue(Product.class);
-                   // Log.d("Product", p.toString());
 
-                    arrayList.add(new CardItem_Selling(p.getImageuri(), p.getTitle()));
 
-                }
-            }
+       for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+           Product p=snapshot.getValue(Product.class);
+           if(p.getUser_id().equals(userID)){
+               arrayList.add(new CardItem_Selling(p.getImageuri(), p.getTitle()));
+           }
 
-        }
+//            if(snapshot.getKey().equals(userID)) {
+//            Log.d("User_id  database is:",snapshot.getKey());
+//                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+//                    Product p = snapshot1.getValue(Product.class);
+//                   // Log.d("Product", p.toString());
+//
+//                    arrayList.add(new CardItem_Selling(p.getImageuri(), p.getTitle()));
+//
+//                }
+        //}
+
+    }
 
         RecyclerView mRecyclerView = findViewById(R.id.recyclerView_Selling);
         mRecyclerView.setHasFixedSize(true);

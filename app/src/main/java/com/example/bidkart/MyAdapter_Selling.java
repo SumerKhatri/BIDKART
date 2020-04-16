@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class MyAdapter_Selling extends RecyclerView.Adapter<MyAdapter_Selling.MyViewHolder>{
 
-    private ArrayList<CardItem_Selling> arrayList;
+    private static ArrayList<CardItem_Selling> arrayList;
 
         public  MyAdapter_Selling(ArrayList<CardItem_Selling> arrayList){
             this.arrayList=arrayList;
@@ -43,14 +43,14 @@ public class MyAdapter_Selling extends RecyclerView.Adapter<MyAdapter_Selling.My
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
                                 Intent i=new Intent(itemView.getContext(),Watchlist.class);
-                                i.putExtra("position",getAdapterPosition()+"");
+                                i.putExtra("title",arrayList.get(getAdapterPosition()).getTitle());
                                 itemView.getContext().startActivity(i);
                                 return true;
                             }
                         });
 
 
-                        popup.inflate(R.menu.card_menu);
+                        popup.inflate(R.menu.watchlist_remove);
 
 
                         popup.show();
