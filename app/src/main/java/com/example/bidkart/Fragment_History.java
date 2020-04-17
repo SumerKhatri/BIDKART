@@ -43,7 +43,7 @@ public class Fragment_History extends Fragment {
         bid_data_list = new ArrayList<>();
         recyclerView = view.findViewById(R.id.recyclerViewbid);
 
-        if((((Place_Bid)getActivity()).price.equals(((Place_Bid)getActivity()).base_price))) {
+        if( true/*(((Place_Bid)getActivity()).price.equals(((Place_Bid)getActivity()).base_price))*/) {
 
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference("bids");
@@ -144,5 +144,9 @@ public class Fragment_History extends Fragment {
         ((Place_Bid)getActivity()).timer.start();
     }
 
-
+    @Override
+    public void onStop() {
+        ((Place_Bid)getActivity()).timer.cancel();
+        super.onStop();
+    }
 }
