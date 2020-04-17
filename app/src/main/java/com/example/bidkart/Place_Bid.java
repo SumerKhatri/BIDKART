@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -21,8 +22,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,12 +34,14 @@ public class Place_Bid extends AppCompatActivity {
     private ImageView product_image;
     private TextView title,current_price,desc,category,condition;
     private Button place_bid;
-    private Chronometer timer;
+    TextView countdown;
+    CountDownTimer timer;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     Product product;
     String user_id,user_name;
     Integer price,base_price;
+    Long previous_bid_timestamp = 0L ;
 
 
 
@@ -56,7 +61,7 @@ public class Place_Bid extends AppCompatActivity {
         title = findViewById(R.id.textView20);
         place_bid = findViewById(R.id.button);
         current_price = findViewById(R.id.textView22);
-        timer = findViewById(R.id.timer);
+        countdown = findViewById(R.id.timer);
         desc = findViewById(R.id.textView24);
         category = findViewById(R.id.textView25);
         condition = findViewById(R.id.textView26);
@@ -100,7 +105,6 @@ public class Place_Bid extends AppCompatActivity {
          desc.setText(product.getDescription());
          category.setText(product.getCategory());
          condition.setText(product.getCondition());
-         timer.setBase(360000);
 
         SharedPreferences sh = getSharedPreferences("My_Shared_Pref", MODE_PRIVATE);
         user_id = sh.getString("user_id", "");
@@ -112,7 +116,14 @@ public class Place_Bid extends AppCompatActivity {
             public void onClick(View v) {
                 String bid_id = databaseReference.child(product.getId()).push().getKey();
                 int cur_price = Integer.parseInt(current_price.getText().toString());
-                Bid_Data bid_data = new Bid_Data(user_name,cur_price,"10000",user_id);
+                Map map = new HashMap();
+                map.put("timestamp",ServerValue.TIMESTAMP);
+                Long bid_time;
+                if(previous_bid_timestamp == 0L)
+                    bid_time = 0L;
+                else
+                bid_time = Math.abs((System.currentTimeMillis()-previous_bid_timestamp)/1000);
+                Bid_Data_Timestamp bid_data = new Bid_Data_Timestamp(user_name,cur_price,String.valueOf(bid_time),user_id,map);
                 databaseReference.child(product.getId()).child(bid_id).setValue(bid_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

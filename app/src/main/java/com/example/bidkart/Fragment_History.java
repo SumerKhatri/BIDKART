@@ -1,6 +1,7 @@
 package com.example.bidkart;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +43,7 @@ public class Fragment_History extends Fragment {
         bid_data_list = new ArrayList<>();
         recyclerView = view.findViewById(R.id.recyclerViewbid);
 
-        if(((Place_Bid)getActivity()).price!=((Place_Bid)getActivity()).base_price) {
+        if( true/*(((Place_Bid)getActivity()).price.equals(((Place_Bid)getActivity()).base_price))*/) {
 
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference("bids");
@@ -50,6 +51,11 @@ public class Fragment_History extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     bid_data_list = getData(dataSnapshot);
+                    int size = bid_data_list.size();
+                    if(size!=0) {
+                        ((Place_Bid)getActivity()).previous_bid_timestamp = (Long)(bid_data_list.get(size - 1).timestamp.get("timestamp"));
+                        setTimer(Math.abs(System.currentTimeMillis() - (Long) (bid_data_list.get(size - 1).timestamp.get("timestamp"))));
+                    }
                     adapter_bidding = new Adapter_Bidding(bid_data_list,getActivity());
                     recyclerView.setAdapter(adapter_bidding);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -120,5 +126,28 @@ public class Fragment_History extends Fragment {
         return  bid_info;
     }
 
+    public void setTimer(Long timer){
 
+        if(((Place_Bid)getActivity()).timer!=null)
+        ((Place_Bid)getActivity()).timer.cancel();
+        ((Place_Bid)getActivity()).timer = new CountDownTimer(5000000-timer,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                ((Place_Bid)getActivity()).countdown.setText(Long.toString(millisUntilFinished/1000));
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        };
+        ((Place_Bid)getActivity()).timer.start();
+    }
+
+    @Override
+    public void onStop() {
+        if(((Place_Bid)getActivity()).timer!=null)
+        ((Place_Bid)getActivity()).timer.cancel();
+        super.onStop();
+    }
 }
