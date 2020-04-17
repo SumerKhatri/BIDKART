@@ -69,7 +69,9 @@ public class Fragment_History extends Fragment {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
                     Bid_Data bid_data = dataSnapshot.getValue(Bid_Data.class);
-                    ((Place_Bid) context).current_price.setText(((Place_Bid)context).price.toString());
+                    Integer inc_price = bid_data.bid_price;
+                    inc_price += ((Place_Bid) context).base_price/10;
+                    ((Place_Bid) context).current_price.setText(inc_price.toString());
                     ((Place_Bid) context).previous_bid_timestamp = (Long) bid_data.timestamp.get("timestamp");
                     setTimer(Math.abs(System.currentTimeMillis() - ((Place_Bid) context).previous_bid_timestamp));
                     bid_data_list.add(0, bid_data);
