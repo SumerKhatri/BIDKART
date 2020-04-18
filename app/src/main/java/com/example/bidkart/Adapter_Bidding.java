@@ -49,7 +49,16 @@ public class Adapter_Bidding extends RecyclerView.Adapter<BiddingHistory_Viewhol
         Bid_Data current_data = bid_data.get(position);
         int size = bid_data.size();
 
-        if(size -1 == position) {
+        if(Fragment_History.check) {
+            if (size - 1 == position) {
+                Fragment_History.check = false;
+                if (current_data.user_id.equals(user_id))
+                    Place_Bid.place_bid.setEnabled(false);
+                else
+                    Place_Bid.place_bid.setEnabled(true);
+            }
+        }
+        else {
             if (current_data.user_id.equals(user_id))
                 Place_Bid.place_bid.setEnabled(false);
             else

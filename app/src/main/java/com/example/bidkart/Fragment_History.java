@@ -36,6 +36,7 @@ public class Fragment_History extends Fragment {
     Adapter_Bidding adapter_bidding;
     RecyclerView recyclerView;
     ArrayList<Bid_Data> bid_data_list;
+    static boolean check;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     Context context;
@@ -61,6 +62,7 @@ public class Fragment_History extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         bid_data_list = new ArrayList<>();
+        check = true;
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("bids");
         get_latest_bid();
