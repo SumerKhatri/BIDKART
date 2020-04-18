@@ -132,7 +132,7 @@ public class Fragment_History extends Fragment {
 
         if(((Place_Bid)context).timer!=null)
         ((Place_Bid)context).timer.cancel();
-        ((Place_Bid)context).timer = new CountDownTimer(5000000-timer,1000) {
+        ((Place_Bid)context).timer = new CountDownTimer(500000-timer,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) millisUntilFinished/1000;

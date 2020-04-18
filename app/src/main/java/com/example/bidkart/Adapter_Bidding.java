@@ -47,18 +47,21 @@ public class Adapter_Bidding extends RecyclerView.Adapter<BiddingHistory_Viewhol
     public void onBindViewHolder(@NonNull BiddingHistory_Viewholder holder, int position) {
 
         Bid_Data current_data = bid_data.get(position);
+        int size = bid_data.size();
+
+        if(size -1 == position) {
+            if (current_data.user_id.equals(user_id))
+                Place_Bid.place_bid.setEnabled(false);
+            else
+                Place_Bid.place_bid.setEnabled(true);
+        }
 
         if(current_data.user_id.equals(user_id))
         {
             holder.itemView.setBackgroundColor(Color.parseColor("#ecffeb"));
             current_data.bidder_name = "You";
-            Place_Bid.place_bid.setEnabled(false);
-            //  holder.imageView.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
-        else
-        {
-            Place_Bid.place_bid.setEnabled(true);
-        }
+
 
         holder.bidder_name.setText(current_data.bidder_name);
         holder.bid_price.setText(current_data.bid_price.toString());
