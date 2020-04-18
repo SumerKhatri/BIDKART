@@ -2,6 +2,7 @@ package com.example.bidkart;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -16,12 +17,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONObject;
@@ -142,6 +145,57 @@ public class Fragment_History extends Fragment {
 
             @Override
             public void onFinish() {
+                Log.d("finished----","---------------------------");
+                firebaseDatabase = FirebaseDatabase.getInstance();
+                final DatabaseReference dR = firebaseDatabase.getReference("bids").child(((Place_Bid)getActivity()).product.getId());
+
+                final    Product p=Home.pdb.searchByID(dR.getKey());
+                Log.d("product","----------------------------"+p);
+                final int curr_price=p.getCurrent_price()-p.getBase_price()*10/100;
+                final String seller_id=p.getUser_id();
+                ((Place_Bid) context).place_bid.setText("SOLD OUT");
+
+                Query q= dR.orderByKey().limitToLast(1);
+                Log.d("q","---------------------------------------------------------------      "+q.getRef().getKey());
+                q.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot ds:dataSnapshot.getChildren()){
+                            Bid_Data last_bid=ds.getValue(Bid_Data.class);
+                            if(last_bid.getBid_price()==curr_price){
+                                Log.d("Last_bid","----------------------------------------------"+last_bid);
+                                String   buyer_id=last_bid.getUser_id();
+                                SoldProduct sp=new SoldProduct(p.getId(),p.getTitle(),p.getDescription()
+                                        ,p.getCategory(),p.getCondition(),p.getImageuri(),p.getLocation()
+                                        , p.getBase_price(),p.getQuantity(),p.getCurrent_price()-p.getBase_price()*10/100, p.getDuration(),p.getPos(),  seller_id,buyer_id);
+                                DatabaseReference dr_soldproduct=firebaseDatabase.getReference().child("Sold_Products").child(p.getId());
+                                dr_soldproduct.setValue(sp);
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+                final DatabaseReference product=firebaseDatabase.getReference().child("orders").child(p.getId());
+                product.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Intent i=new Intent(getContext(),Wins.class);
+
+                        getActivity().finishAffinity();
+                        startActivity(new Intent(getContext(),Home.class));
+                        startActivity(i);
+                    }
+                });
+
+
 
             }
         };
