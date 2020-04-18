@@ -32,16 +32,16 @@ import java.util.Map;
 public class Place_Bid extends AppCompatActivity {
 
     private ImageView product_image;
-    private TextView title,current_price,desc,category,condition;
+    private TextView title,desc,category,condition;
     private Button place_bid;
-    TextView countdown;
+    TextView countdown,current_price;
     CountDownTimer timer;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     Product product;
     String user_id,user_name;
     Integer price,base_price;
-    Long previous_bid_timestamp = 0L ;
+    Long previous_bid_timestamp = 10L ;
 
 
 
@@ -53,8 +53,6 @@ public class Place_Bid extends AppCompatActivity {
         product = Home.pdb.getProduct(pos);
         price = product.getCurrent_price();
         base_price = product.getBase_price();
-
-
         setContentView(R.layout.activity_place_bid);
 
         product_image = findViewById(R.id.imageView3);
@@ -116,14 +114,14 @@ public class Place_Bid extends AppCompatActivity {
             public void onClick(View v) {
                 String bid_id = databaseReference.child(product.getId()).push().getKey();
                 int cur_price = Integer.parseInt(current_price.getText().toString());
-                Map map = new HashMap();
+                HashMap<String,Object> map = new HashMap<>();
                 map.put("timestamp",ServerValue.TIMESTAMP);
                 Long bid_time;
-                if(previous_bid_timestamp == 0L)
+                if(previous_bid_timestamp == 10L)
                     bid_time = 0L;
                 else
                 bid_time = Math.abs((System.currentTimeMillis()-previous_bid_timestamp)/1000);
-                Bid_Data_Timestamp bid_data = new Bid_Data_Timestamp(user_name,cur_price,String.valueOf(bid_time),user_id,map);
+                Bid_Data bid_data = new Bid_Data(user_name,cur_price,String.valueOf(bid_time),user_id,map);
                 databaseReference.child(product.getId()).child(bid_id).setValue(bid_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
