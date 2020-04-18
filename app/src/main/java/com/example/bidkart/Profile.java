@@ -33,7 +33,7 @@ public class Profile extends AppCompatActivity {
         cont=findViewById(R.id.cont);
         name=findViewById(R.id.ETentername);
         name.setText(user.getName());
-        ;
+
 
         cont.setOnClickListener(new View.OnClickListener() {
             @Override

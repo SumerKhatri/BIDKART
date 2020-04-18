@@ -102,7 +102,7 @@ public class Place_Bid extends AppCompatActivity {
          current_price.setText(price.toString());
          desc.setText(product.getDescription());
          category.setText(product.getCategory());
-         condition.setText(product.getCondition());
+         condition.setText("(" + product.getCondition() + ")");
 
         SharedPreferences sh = getSharedPreferences("My_Shared_Pref", MODE_PRIVATE);
         user_id = sh.getString("user_id", "");
@@ -116,12 +116,29 @@ public class Place_Bid extends AppCompatActivity {
                 int cur_price = Integer.parseInt(current_price.getText().toString());
                 HashMap<String,Object> map = new HashMap<>();
                 map.put("timestamp",ServerValue.TIMESTAMP);
-                Long bid_time;
-                if(previous_bid_timestamp == 10L)
+                long bid_time;
+                String time;
+                if(previous_bid_timestamp == 10L) {
                     bid_time = 0L;
-                else
-                bid_time = Math.abs((System.currentTimeMillis()-previous_bid_timestamp)/1000);
-                Bid_Data bid_data = new Bid_Data(user_name,cur_price,String.valueOf(bid_time),user_id,map);
+                    time = "First Bid";
+                }
+                else {
+                    bid_time = Math.abs((System.currentTimeMillis() - previous_bid_timestamp) / 1000);
+                    int seconds = (int) bid_time;
+                    if(seconds < 3600)
+                    {
+                        int p1 = seconds % 60;
+                        int p2 = seconds / 60;
+                        time = p2 + " min " + p1 + " secs";
+                    }
+                    else {
+                        int p2 = seconds / 60;
+                        int p3 = p2 % 60;
+                        p2 = p2 / 60;
+                        time = p2 + " hr " + p3 + " mins";
+                    }
+                }
+                Bid_Data bid_data = new Bid_Data(user_name,cur_price,time,user_id,map);
                 databaseReference.child(product.getId()).child(bid_id).setValue(bid_data).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
