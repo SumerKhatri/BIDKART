@@ -7,9 +7,12 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -21,17 +24,36 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class Sold extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-
+    String userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sold);
+        DatabaseReference dRef_sold_products= FirebaseDatabase.getInstance().getReference().child("Sold_Products");
+        dRef_sold_products.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                showData(dataSnapshot);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         navigationView = findViewById(R.id.nav_view_selling_sold);
         drawerLayout = findViewById(R.id.drawer_layout_sold);
 
@@ -143,5 +165,32 @@ public class Sold extends AppCompatActivity implements NavigationView.OnNavigati
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switchToActivity(item.getTitle());
         return false;
+    }
+    private void showData(DataSnapshot dataSnapshot) {
+        ArrayList<CardItem_Selling> arrayList=new ArrayList<>();
+
+        Log.d("current user_id:", userID);
+        if (userID == null)
+            return;
+
+
+        for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+            SoldProduct sp=snapshot.getValue(SoldProduct.class);
+            if(sp.getSeller_id().equals(userID)){
+                arrayList.add(new CardItem_Selling(sp.getImageuri(), sp.getTitle()));
+            }
+
+
+
+        }
+
+        RecyclerView mRecyclerView = findViewById(R.id.recyclerView_sold);
+        mRecyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager  mLayoutMAnager=new LinearLayoutManager(this);
+        RecyclerView.Adapter mAdapter=new MyAdapter_Selling(arrayList);
+
+        mRecyclerView.setLayoutManager(mLayoutMAnager);
+        mRecyclerView.setAdapter(mAdapter);
+
     }
 }

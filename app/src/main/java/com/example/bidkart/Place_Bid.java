@@ -33,7 +33,7 @@ public class Place_Bid extends AppCompatActivity {
 
     private ImageView product_image;
     private TextView title,desc,category,condition;
-    private Button place_bid;
+     Button place_bid;
     TextView countdown,current_price;
     CountDownTimer timer;
     FirebaseDatabase firebaseDatabase;

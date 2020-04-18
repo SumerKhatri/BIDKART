@@ -104,7 +104,10 @@ String id="";
             i=i+20;
             Log.d("p_id--------",p_id);
             Product p=Home.pdb.searchByID(p_id);
+            if(p!=null)
             arrayList.add(new CardItem_Selling(p.getImageuri(), p.getTitle()));
+            else
+                return;
         }
 
         Log.d("data length:",data.length()+"");

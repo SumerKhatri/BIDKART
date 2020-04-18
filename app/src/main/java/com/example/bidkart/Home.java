@@ -174,6 +174,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                Product p=snapshot.getValue(Product.class);
                p.setPos(pos);
                pos++;
+               if(p.getImageuri()==null){
+                   snapshot.getRef().removeValue();
+                   continue;
+               }
                pdb.add(p);
                Log.d("Product",p.toString());
 

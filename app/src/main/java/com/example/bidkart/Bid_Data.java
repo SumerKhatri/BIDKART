@@ -19,6 +19,56 @@ public class Bid_Data {
         this.timestamp = timestamp;
     }
 
+    @Override
+    public String toString() {
+        return "Bid_Data{" +
+                "bidder_name='" + bidder_name + '\'' +
+                ", bid_price=" + bid_price +
+                ", bid_time='" + bid_time + '\'' +
+                ", user_id='" + user_id + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
+    }
+
+    public String getBidder_name() {
+        return bidder_name;
+    }
+
+    public void setBidder_name(String bidder_name) {
+        this.bidder_name = bidder_name;
+    }
+
+    public Integer getBid_price() {
+        return bid_price;
+    }
+
+    public void setBid_price(Integer bid_price) {
+        this.bid_price = bid_price;
+    }
+
+    public String getBid_time() {
+        return bid_time;
+    }
+
+    public void setBid_time(String bid_time) {
+        this.bid_time = bid_time;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    public HashMap<String, Object> getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(HashMap<String, Object> timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public Bid_Data() {
     }
