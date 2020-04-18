@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
 
 
-        >
+        android:background="#FD387BB1">
 
         <ImageView
             android:id="@+id/item_image"
