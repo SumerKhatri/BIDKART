@@ -132,7 +132,12 @@ public class Fragment_History extends Fragment {
         ((Place_Bid)context).timer = new CountDownTimer(5000000-timer,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                ((Place_Bid)context).countdown.setText(Long.toString(millisUntilFinished/1000));
+                int seconds = (int) millisUntilFinished/1000;
+                int p1 = seconds % 60;
+                int p2 = seconds / 60;
+                int p3 = p2 % 60;
+                p2 = p2 / 60;
+                ((Place_Bid)context).countdown.setText(p2 + ":" + p3 + ":" + p1);
             }
 
             @Override
@@ -143,7 +148,7 @@ public class Fragment_History extends Fragment {
         ((Place_Bid)context).timer.start();
     }
 
-    private ArrayList<Bid_Data> reverseArrayList(ArrayList<Bid_Data> alist)
+    /*private ArrayList<Bid_Data> reverseArrayList(ArrayList<Bid_Data> alist)
     {
         // ArrayList for storing reversed elements
         ArrayList<Bid_Data> revArrayList = new ArrayList<Bid_Data>();
@@ -155,7 +160,7 @@ public class Fragment_History extends Fragment {
 
         // Return the reversed arraylist
         return revArrayList;
-    }
+    }*/
 
     @Override
     public void onStop() {
