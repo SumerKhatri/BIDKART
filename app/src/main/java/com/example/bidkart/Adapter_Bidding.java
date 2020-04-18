@@ -1,6 +1,7 @@
 package com.example.bidkart;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import static android.content.Context.MODE_PRIVATE;
+
+
 public class Adapter_Bidding extends RecyclerView.Adapter<BiddingHistory_Viewholder> {
 
     ArrayList<Bid_Data> bid_data;
     Context context;
+    String user_id;
+
 
 
     public Adapter_Bidding(ArrayList<Bid_Data> bid_data, Context context) {
@@ -29,28 +35,35 @@ public class Adapter_Bidding extends RecyclerView.Adapter<BiddingHistory_Viewhol
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View bid_view = inflater.inflate(R.layout.recycler_bids,parent,false);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("My_Shared_Pref", MODE_PRIVATE);
+        user_id = sharedPreferences.getString("user_id", "");
 
         BiddingHistory_Viewholder biddingHistory_viewholder = new BiddingHistory_Viewholder(bid_view);
+
         return biddingHistory_viewholder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull BiddingHistory_Viewholder holder, int position) {
-        Bid_Data current_data = bid_data.get(position);
-        holder.bidder_name.setText(current_data.bidder_name);
-        holder.bid_price.setText(current_data.bid_price.toString());
-        holder.bid_time.setText(current_data.bid_time);
 
-        /*if(position %2 == 1)
+        Bid_Data current_data = bid_data.get(position);
+
+        if(current_data.user_id.equals(user_id))
         {
-            holder.itemView.setBackgroundColor(Color.parseColor("#E6E6FA"));
+            holder.itemView.setBackgroundColor(Color.parseColor("#ecffeb"));
+            current_data.bidder_name = "You";
+            Place_Bid.place_bid.setEnabled(false);
             //  holder.imageView.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
         else
         {
-            holder.itemView.setBackgroundColor(Color.parseColor("#F2F2F2"));
-            //  holder.imageView.setBackgroundColor(Color.parseColor("#FFFAF8FD"));
-        }*/
+            Place_Bid.place_bid.setEnabled(true);
+        }
+
+        holder.bidder_name.setText(current_data.bidder_name);
+        holder.bid_price.setText(current_data.bid_price.toString());
+        holder.bid_time.setText(current_data.bid_time);
+
 
     }
 

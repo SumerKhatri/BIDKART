@@ -86,11 +86,13 @@ public class SellProductFinal extends AppCompatActivity implements NavigationVie
         navigationView.setNavigationItemSelectedListener(this);
 
 
+
+
         ArrayList<String> arr=new ArrayList<>();
         for(int i=3;i<=100;i++){
             arr.add(""+i);
         }
-        ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,arr);
+        ArrayAdapter<String> arrayAdapter=new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,arr);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp.setAdapter(arrayAdapter);
 

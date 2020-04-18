@@ -33,7 +33,7 @@ public class Place_Bid extends AppCompatActivity {
 
     private ImageView product_image;
     private TextView title,desc,category,condition;
-     Button place_bid;
+    static Button place_bid;
     TextView countdown,current_price;
     CountDownTimer timer;
     FirebaseDatabase firebaseDatabase;
@@ -67,7 +67,7 @@ public class Place_Bid extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("bids");
 
-        databaseReference.addChildEventListener(new ChildEventListener() {
+       /* databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
@@ -92,7 +92,7 @@ public class Place_Bid extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
 
 
@@ -147,8 +147,7 @@ public class Place_Bid extends AppCompatActivity {
                         product_reference.child(product.getId()).child("current_price").setValue(price += base_price/10).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                Fragment_History fragment_history = (Fragment_History)getSupportFragmentManager().findFragmentById(R.id.fragment);
-                                current_price.setText((price).toString());
+                                /*current_price.setText((price).toString());*/
                             }
                         });
 
