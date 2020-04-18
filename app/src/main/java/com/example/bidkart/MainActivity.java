@@ -29,6 +29,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
     private SignInButton signInButton;
@@ -36,7 +41,11 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private int RC_SIGN_IN = 1;
     private FirebaseAuth.AuthStateListener authStateListener;
-    User user;
+    User user,validate;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference dbref;
+    boolean validated;
+    String uid;
 
     @Override
     protected void onStart() {
@@ -51,33 +60,48 @@ public class MainActivity extends AppCompatActivity {
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
         }
-
-        /*SharedPreferences sp = getSharedPreferences("My_Shared_Pref",MODE_PRIVATE);
-        if(sp.getBoolean("logged",false)){
-            Intent intent = new Intent(MainActivity.this,Home.class);
-            startActivity(intent);
-        }*/
         firebaseAuth = FirebaseAuth.getInstance();
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            public void onAuthStateChanged(@NonNull final FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user!=null)
-                {
-                    Intent intent = new Intent(MainActivity.this,Home.class);
-                    startActivity(intent);
+                if (user != null) {
+                    uid = user.getUid();
+
+                    firebaseDatabase = FirebaseDatabase.getInstance();
+                    dbref = firebaseDatabase.getReference("users");
+                    dbref.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                validate = snapshot.getValue(User.class);
+                                if (validate.getUserId().equals(uid))
+                                    validated = true;
+
+                                if (validated) {
+                                    Intent intent = new Intent(MainActivity.this, Home.class);
+                                    if (authStateListener != null)
+                                        firebaseAuth.removeAuthStateListener(authStateListener);
+                                    startActivity(intent);
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
             }
         };
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         signInButton = findViewById(R.id.signInButton);
         firebaseAuth = FirebaseAuth.getInstance();
-
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -130,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
                 boolean check = !task.getResult().getSignInMethods().isEmpty();
-                if(check){
+                if(check && validated){
                    already_Reg(authCredential);
                 }
                 else
@@ -199,8 +223,9 @@ public class MainActivity extends AppCompatActivity {
     }*/
 
     private void already_Reg(AuthCredential authCredential){
-
-        firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                if(authStateListener!=null)
+                firebaseAuth.removeAuthStateListener(authStateListener);
+                firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -216,6 +241,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void Register(AuthCredential authCredential){
+        if(authStateListener!=null)
+        firebaseAuth.removeAuthStateListener(authStateListener);
         firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
