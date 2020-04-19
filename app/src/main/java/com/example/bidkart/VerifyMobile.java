@@ -33,7 +33,7 @@ public class VerifyMobile extends AppCompatActivity {
     EditText PhoneNumber;
     private Button SendOTP;
     User user;
-
+    LoadingDialog loadingDialog;
 
 
     @Override
@@ -46,7 +46,7 @@ public class VerifyMobile extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         SendOTP = findViewById(R.id.btn_verify_phone);
         PhoneNumber = findViewById(R.id.ETLoginPhone);
-
+        loadingDialog=new LoadingDialog(VerifyMobile.this);
         Intent intent = getIntent();
         user = intent.getParcelableExtra("USER");
 
@@ -57,6 +57,7 @@ public class VerifyMobile extends AppCompatActivity {
         SendOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingDialog.startLoadingDialog();
                 Number = PhoneNumber.getText().toString();
                 validNo(Number);
                 sendVerificationCode(Number);
@@ -72,6 +73,7 @@ public class VerifyMobile extends AppCompatActivity {
                 if (code.isEmpty() || code.length() < 6) {
                     OTP.setError("Enter valid code");
                     OTP.requestFocus();
+                    loadingDialog.dismissDialog();
                     return;
                 }
 
@@ -86,6 +88,7 @@ public class VerifyMobile extends AppCompatActivity {
         if(no.isEmpty() || no.length() < 10){
             PhoneNumber.setError("Enter a valid mobile");
             PhoneNumber.requestFocus();
+            loadingDialog.dismissDialog();
             return;
         }
     }
@@ -120,6 +123,7 @@ public class VerifyMobile extends AppCompatActivity {
         @Override
         public void onVerificationFailed(FirebaseException e) {
             Toast.makeText(VerifyMobile.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            loadingDialog.dismissDialog();
         }
 
         @Override
@@ -152,6 +156,7 @@ public class VerifyMobile extends AppCompatActivity {
                             Intent intent = new Intent(VerifyMobile.this, Profile.class);
                             intent.putExtra("USER",user);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            loadingDialog.dismissDialog();
                             startActivity(intent);
 
                         } else {
@@ -159,7 +164,7 @@ public class VerifyMobile extends AppCompatActivity {
                             //verification unsuccessful.. display an error message
 
                             String message = "Something is wrong, we will fix it soon...";
-
+                            loadingDialog.dismissDialog();
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 message = "Invalid code entered...";
                             }

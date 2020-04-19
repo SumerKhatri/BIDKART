@@ -127,6 +127,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                  currentUser=dataSnapshot.getValue(User.class);
+                 if(currentUser==null){
+                     startActivity(new Intent(Home.this,VerifyMobile.class));
+                     finishAffinity();
+                 }
                 ImageView iv=findViewById(R.id.profile_pic);
             TextView tv=findViewById(R.id.profile_name);
             String source = "Welcome "+ "<b>" + currentUser.getName() + "</b>";

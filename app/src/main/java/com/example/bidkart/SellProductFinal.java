@@ -59,7 +59,7 @@ public class SellProductFinal extends AppCompatActivity implements NavigationVie
     String image_uri;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-
+    private LoadingDialog loadingDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +71,7 @@ public class SellProductFinal extends AppCompatActivity implements NavigationVie
 
         navigationView = findViewById(R.id.nav_view_selling_final);
         drawerLayout = findViewById(R.id.drawer_layout_final);
-
+    loadingDialog=new LoadingDialog(SellProductFinal.this);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar_selling_final);
@@ -121,6 +121,7 @@ public class SellProductFinal extends AppCompatActivity implements NavigationVie
         sell_final.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingDialog.startLoadingDialog();
                 product.setBase_price(Integer.parseInt(price.getText().toString()));
                 product.setCurrent_price(Integer.parseInt(price.getText().toString()));
                 product.setQuantity(Integer.parseInt(quantity.getText().toString()));
@@ -154,6 +155,7 @@ public class SellProductFinal extends AppCompatActivity implements NavigationVie
                                 Log.d("After:",product.getImageuri());
                                image_uri=uri.toString();
                                 add_product();
+                                loadingDialog.dismissDialog();
                                 startActivity(new Intent(SellProductFinal.this, Selling.class));
                             }
                         });
