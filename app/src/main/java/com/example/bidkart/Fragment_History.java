@@ -225,6 +225,7 @@ public class Fragment_History extends Fragment {
             ((Place_Bid)context).timer.cancel();
         int size = bid_data_list.size();
         bid_data_list.clear();
+        if(adapter_bidding != null)
         adapter_bidding.notifyItemRangeRemoved(0,size);
     }
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -128,7 +129,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                  currentUser=dataSnapshot.getValue(User.class);
                 ImageView iv=findViewById(R.id.profile_pic);
             TextView tv=findViewById(R.id.profile_name);
-            tv.setText("Welcome "+currentUser.getName());
+            String source = "Welcome "+ "<b>" + currentUser.getName() + "</b>";
+            tv.setText(Html.fromHtml(source));
             Picasso.get().load(Uri.parse(currentUser.getProfilepic())).into(iv);
         }
 

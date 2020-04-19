@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
                 boolean check = !task.getResult().getSignInMethods().isEmpty();
-                if(check && validated){
+                if(check){
                    already_Reg(authCredential);
                 }
                 else
