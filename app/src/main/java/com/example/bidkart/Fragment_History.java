@@ -116,7 +116,7 @@ public class Fragment_History extends Fragment {
 
 
 
-    /*public ArrayList<Bid_Data> getData(DataSnapshot dataSnapshot) {
+    public ArrayList<Bid_Data> getData(DataSnapshot dataSnapshot) {
 
         ArrayList<Bid_Data> bid_info = new ArrayList<>();
         int pos = 0;
@@ -128,7 +128,7 @@ public class Fragment_History extends Fragment {
 
         }
         return  bid_info;
-    }*/
+    }
 
     public void setTimer(Long timer){
 
@@ -147,76 +147,32 @@ public class Fragment_History extends Fragment {
 
             @Override
             public void onFinish() {
+                Log.d("finished----","---------------------------");
+                firebaseDatabase = FirebaseDatabase.getInstance();
+                final DatabaseReference dR = firebaseDatabase.getReference("bids").child(((Place_Bid)getActivity()).product.getId());
 
-                DatabaseReference dbr = firebaseDatabase.getReference("bids");
-                dbr.child(((Place_Bid)context).product.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                final    Product p=Home.pdb.searchByID(dR.getKey());
+                Log.d("product","----------------------------"+p);
+                final int curr_price=p.getCurrent_price()-p.getBase_price()*10/100;
+                final String seller_id=p.getUser_id();
+                ((Place_Bid) context).place_bid.setText("SOLD OUT");
+
+                Query q= dR.orderByKey().limitToLast(1);
+                Log.d("q","---------------------------------------------------------------      "+q.getRef().getKey());
+                q.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        ArrayList<Bid_Data> bid_info = new ArrayList<>();
-                        Long tstamp = null;
-                        int pos = 0;
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            Bid_Data bid_data = snapshot.getValue(Bid_Data.class);
-                            bid_info.add(pos,bid_data);
-                            pos++;
-                            Log.d("Bid_Data", bid_data.toString());
-                            tstamp = (Long) bid_data.timestamp.get("timestamp");
-                        }
-
-                        if(Math.abs(System.currentTimeMillis() - tstamp ) < 30000)
-                        {
-                            return;
-                        }
-                        else {
-                            Log.d("finished----","---------------------------");
-                            firebaseDatabase = FirebaseDatabase.getInstance();
-                            final DatabaseReference dR = firebaseDatabase.getReference("bids").child(((Place_Bid)context).product.getId());
-
-                            final    Product p=Home.pdb.searchByID(dR.getKey());
-                            Log.d("product","----------------------------"+p);
-                            final int curr_price=p.getCurrent_price()-p.getBase_price()*10/100;
-                            final String seller_id=p.getUser_id();
-                            ((Place_Bid) context).place_bid.setText("SOLD OUT");
-
-                            Query q= dR.orderByKey().limitToLast(1);
-                            Log.d("q","---------------------------------------------------------------      "+q.getRef().getKey());
-                            q.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    for(DataSnapshot ds:dataSnapshot.getChildren()){
-                                        Bid_Data last_bid=ds.getValue(Bid_Data.class);
-                                        if(last_bid.getBid_price()==curr_price){
-                                            Log.d("Last_bid","----------------------------------------------"+last_bid);
-                                            String   buyer_id=last_bid.getUser_id();
-                                            SoldProduct sp=new SoldProduct(p.getId(),p.getTitle(),p.getDescription()
-                                                    ,p.getCategory(),p.getCondition(),p.getImageuri(),p.getLocation()
-                                                    , p.getBase_price(),p.getQuantity(),p.getCurrent_price()-p.getBase_price()*10/100, p.getDuration(),p.getPos(),  seller_id,buyer_id);
-                                            DatabaseReference dr_soldproduct=firebaseDatabase.getReference().child("Sold_Products").child(p.getId());
-                                            dr_soldproduct.setValue(sp);
-                                        }
-                                    }
-
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
-
-                            final DatabaseReference product=firebaseDatabase.getReference().child("orders").child(p.getId());
-                            product.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-
-                                    Intent i=new Intent(getContext(),Wins.class);
-
-                                    getActivity().finishAffinity();
-                                    startActivity(new Intent(getContext(),Home.class));
-                                    startActivity(i);
-                                }
-                            });
+                        for(DataSnapshot ds:dataSnapshot.getChildren()){
+                            Bid_Data last_bid=ds.getValue(Bid_Data.class);
+                            if(last_bid.getBid_price()==curr_price){
+                                Log.d("Last_bid","----------------------------------------------"+last_bid);
+                                String   buyer_id=last_bid.getUser_id();
+                                SoldProduct sp=new SoldProduct(p.getId(),p.getTitle(),p.getDescription()
+                                        ,p.getCategory(),p.getCondition(),p.getImageuri(),p.getLocation()
+                                        , p.getBase_price(),p.getQuantity(),p.getCurrent_price()-p.getBase_price()*10/100, p.getDuration(),p.getPos(),  seller_id,buyer_id);
+                                DatabaseReference dr_soldproduct=firebaseDatabase.getReference().child("Sold_Products").child(p.getId());
+                                dr_soldproduct.setValue(sp);
+                            }
                         }
 
                     }
@@ -227,6 +183,19 @@ public class Fragment_History extends Fragment {
                     }
                 });
 
+
+                final DatabaseReference product=firebaseDatabase.getReference().child("orders").child(p.getId());
+                product.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Intent i=new Intent(getContext(),Wins.class);
+
+                       // getActivity().finishAffinity();
+                       // startActivity(new Intent(getContext(),Home.class));
+                        startActivity(i);
+                    }
+                });
 
 
 
