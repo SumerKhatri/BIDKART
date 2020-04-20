@@ -191,8 +191,8 @@ public class Fragment_History extends Fragment {
 
                         Intent i=new Intent(getContext(),Wins.class);
 
-                        getActivity().finishAffinity();
-                        startActivity(new Intent(getContext(),Home.class));
+                       // getActivity().finishAffinity();
+                       // startActivity(new Intent(getContext(),Home.class));
                         startActivity(i);
                     }
                 });
