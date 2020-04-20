@@ -152,7 +152,7 @@ public class Fragment_History extends Fragment {
                 final DatabaseReference dR = firebaseDatabase.getReference("bids").child(((Place_Bid)getActivity()).product.getId());
 
                 final    Product p=Home.pdb.searchByID(dR.getKey());
-                Log.d("key","----------------------------"+ dR.getKey());
+                Log.d("product","----------------------------"+p);
                 final int curr_price=p.getCurrent_price()-p.getBase_price()*10/100;
                 final String seller_id=p.getUser_id();
                 ((Place_Bid) context).place_bid.setText("SOLD OUT");
@@ -191,8 +191,8 @@ public class Fragment_History extends Fragment {
 
                         Intent i=new Intent(getContext(),Wins.class);
 
-                       // getActivity().finishAffinity();
-                      //  startActivity(new Intent(getContext(),Home.class));
+                        getActivity().finishAffinity();
+                        startActivity(new Intent(getContext(),Home.class));
                         startActivity(i);
                     }
                 });
