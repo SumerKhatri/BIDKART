@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,9 +44,16 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
+import org.tensorflow.lite.Interpreter;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 public class SellProductFinal extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    Interpreter interpreter;
     Spinner sp;
     EditText quantity,price;
     String days;
@@ -135,9 +143,40 @@ public class SellProductFinal extends AppCompatActivity implements NavigationVie
 
             }
         });
+        try {
+            interpreter = new Interpreter(loadModelFile(), null);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        final EditText editText=findViewById(R.id.editText3);
+        //price
+        Button predict=findViewById(R.id.bidding_calculate);
+        predict.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                float f=doInference(editText.getText().toString());
+                int x=(int)f;
+                price.setText(x+"");
+            }
+        });
     }
 
+    private MappedByteBuffer loadModelFile() throws IOException{
+        AssetFileDescriptor assetFileDescriptor=this.getAssets().openFd("model.tflite");
+        FileInputStream fileInputStream=new FileInputStream(assetFileDescriptor.getFileDescriptor());
+        FileChannel fileChannel=fileInputStream.getChannel();
+        long startOffset=assetFileDescriptor.getStartOffset();
+        long length=assetFileDescriptor.getLength();
+        return fileChannel.map(FileChannel.MapMode.READ_ONLY,startOffset,length);
+    }
+    public float doInference(String val){
+        float[]input=new float[1];
+        input[0]=Float.parseFloat(val);
+        float[][]output=new float[1][1];
+        interpreter.run(input,output);
+        return output[0][0];
 
+    }
 
     private void uploader(String uri){
       Uri  imageUri=Uri.parse(uri);
