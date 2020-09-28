@@ -84,6 +84,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
      //   navBtn = findViewById(R.id.navigation_menu);
 
         navigationView.bringToFront();
