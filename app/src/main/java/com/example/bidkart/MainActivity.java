@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference dbref;
     boolean validated;
     String uid;
+    Login_Loading login_loading;
 
     @Override
     protected void onStart() {
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
         }
+        login_loading = new Login_Loading(MainActivity.this);
+        login_loading.startLogin_Loading();
         firebaseAuth = FirebaseAuth.getInstance();
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -95,6 +98,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
+                }
+                else {
+                    login_loading.dismissDialog();
                 }
             }
         };

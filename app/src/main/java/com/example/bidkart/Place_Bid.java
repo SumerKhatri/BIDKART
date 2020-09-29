@@ -89,8 +89,7 @@ public class Place_Bid extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onCancelled(@NonNull DatabaseError databaseError)
             }
         });*/
 
